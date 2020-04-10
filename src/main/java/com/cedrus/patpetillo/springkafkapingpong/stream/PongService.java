@@ -35,5 +35,7 @@ public class PongService {
         KafkaStreams pongStream = new KafkaStreams(topologyProvider.getTopology(PingPongTarget.PONG), props);
 
         pongStream.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(pongStream::close));
     }
 }

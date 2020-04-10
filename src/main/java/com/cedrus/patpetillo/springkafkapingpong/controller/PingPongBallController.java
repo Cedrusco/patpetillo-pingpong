@@ -25,25 +25,26 @@ public class PingPongBallController {
     }
 
     @PostMapping(value = "/serve")
-    public ResponseEntity<ApiResponse> serveBall(@RequestBody ServeBallRequest serveBallRequest) { {
-            log.debug("Serve ball request...", serveBallRequest);
+    public ResponseEntity<ServeBallResponse> serveBall(@RequestBody ServeBallRequest serveBallRequest) { {
+            log.debug("Serve ball request: {}", serveBallRequest);
         }
 
         return createBall(serveBallRequest);
     }
 
-    private ResponseEntity<ApiResponse> createBall(ServeBallRequest serveBallRequest) {
+    private ResponseEntity<ServeBallResponse> createBall(ServeBallRequest serveBallRequest) {
+        log.info("Creating ball: {}", serveBallRequest);
         try {
             final PingPongBall pingPongBall = new PingPongBall(serveBallRequest.getId(), PingPongTarget.PING);
             pingPongBallService.serveBall(pingPongBall);
-            ApiResponse apiResponse = new ApiResponse(true, "SUCCESS", "OK");
+            ServeBallResponse serveBallResponse = new ServeBallResponse(true);
 
-            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            return new ResponseEntity<>(serveBallResponse, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.error("Runtime except when trying to create ball", e);
-            ApiResponse apiResponse = new ApiResponse(false, e.getMessage(), "INTERNAL_SERVER_ERROR");
+            ServeBallResponse serveBallResponse = new ServeBallResponse(false, e.getMessage(), "INTERNAL_SERVER_ERROR");
 
-            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(serveBallResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

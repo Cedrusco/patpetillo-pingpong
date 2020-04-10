@@ -35,5 +35,7 @@ public class PingService {
         KafkaStreams pingStream = new KafkaStreams(topologyProvider.getTopology(PingPongTarget.PING), props);
 
         pingStream.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(pingStream::close));
     }
 }

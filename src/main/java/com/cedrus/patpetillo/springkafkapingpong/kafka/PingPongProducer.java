@@ -25,17 +25,17 @@ public class PingPongProducer {
     }
 
     public void sendMessage(String event) {
-        log.debug("Sending event...", event);
+        log.debug("Sending event: {}", event);
 
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, kafkaConfig.getKafkaAppId());
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         KafkaProducer producer = new KafkaProducer(props);
 
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), event);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), null, event);
         producer.send(producerRecord);
         producer.close();
     }

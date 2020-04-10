@@ -14,7 +14,7 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Component
@@ -40,7 +40,7 @@ public class TopologyProvider {
 
         final KStream<String, String> filteredStream = incomingStream.branch((key, value) -> {
             PingPongBall pingPongBall = deserialize(value);
-            log.info("deserialized value: " + pingPongBall.toString());
+            log.info("deserialize value: {}", pingPongBall);
             return pingPongBall.getPingPongTarget().equals(pingPongTarget);
         })[0];
 
@@ -55,7 +55,7 @@ public class TopologyProvider {
         try {
             return objectMapper.readValue(pingPongBallString, PingPongBall.class);
         } catch (Exception e) {
-            log.debug("Deserialize error " + pingPongBallString);
+            log.debug("Deserialize error: {}", pingPongBallString);
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +64,7 @@ public class TopologyProvider {
         try {
             return objectMapper.writeValueAsString(pingPongBall);
         } catch (Exception e) {
-            log.debug("Serialize error " + pingPongBall);
+            log.debug("Serialize error: {}", pingPongBall);
             throw new RuntimeException(e);
         }
     }
@@ -76,23 +76,23 @@ public class TopologyProvider {
 
             @Override
             public String transform(String value) {
-                log.info("Transforming ping pong ball: ", value);
                 log.debug("Ping pong ball received");
+                log.info("Transforming ping pong ball: {}", value);
                 final int minDelay = appConfig.getMinDelaySeconds();
                 final int maxDelay = appConfig.getMaxDelaySeconds();
 
-                final Random random = new Random();
-                final int sleepTime = random.nextInt((maxDelay - minDelay) + minDelay);
-                log.debug("Sleep for: ", sleepTime);
+                final int sleepTime = ThreadLocalRandom.current().nextInt((maxDelay - minDelay) + minDelay);
+                log.debug("Sleep for: {}", sleepTime);
 
                 try {
                     Thread.sleep(sleepTime * 1000L);
-                    return value;
                 } catch (InterruptedException e) {
                     log.error("Sleep interrupted", e);
                 }
 
                 final PingPongBall pingPongBall = deserialize(value);
+
+                log.info("Returning ping pong ball: {}", pingPongBall);
                 pingPongBall.returnBall();
                 return serialize(pingPongBall);
             }

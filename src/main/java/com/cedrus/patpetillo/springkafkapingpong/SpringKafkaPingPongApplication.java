@@ -26,8 +26,8 @@ public class SpringKafkaPingPongApplication {
 		SpringApplication.run(SpringKafkaPingPongApplication.class, args);
 	}
 
-	@Bean // Bean is a way of making a method visible to Spring, so it knows to call it.
-	public CommandLineRunner pingPongRUnner(ApplicationContext ctx) {
+	@Bean
+	public CommandLineRunner pingPongRunner(ApplicationContext ctx) {
 		try {
 			return args -> {
 				log.info("Ping stream starting...");
