@@ -5,7 +5,6 @@ import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class PingPongProducer {
         this.topicConfig = topicConfig;
     }
 
-    public void sendMessage(String event) {
+    public void sendMessage(String event, String key) {
         log.debug("Sending event: {}", event);
 
         Properties props = new Properties();
@@ -35,7 +34,7 @@ public class PingPongProducer {
 
         KafkaProducer producer = new KafkaProducer(props);
 
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), null, event);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), key, event);
         producer.send(producerRecord);
         producer.close();
     }
