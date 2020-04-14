@@ -1,13 +1,5 @@
 package com.cedrus.patpetillo.springkafkapingpong;
 
-<<<<<<< HEAD
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class SpringKafkaPingPongApplication {
-
-=======
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.KafkaConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
@@ -30,13 +22,10 @@ public class SpringKafkaPingPongApplication {
 
 	public static final Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");
 
->>>>>>> 0d6bd82037f45e79430daf71a4a61c393e3df464
 	public static void main(String[] args) {
 		SpringApplication.run(SpringKafkaPingPongApplication.class, args);
 	}
 
-<<<<<<< HEAD
-=======
 	@Bean
 	public CommandLineRunner pingPongRunner(ApplicationContext ctx) {
 		try {
@@ -70,5 +59,4 @@ public class SpringKafkaPingPongApplication {
 			throw rex;
 		}
 	}
->>>>>>> 0d6bd82037f45e79430daf71a4a61c393e3df464
 }
