@@ -7,4 +7,5 @@ import lombok.Data;
 public class ServeBallRequest {
     @JsonProperty private String id;
     @JsonProperty private String ball;
+    @JsonProperty private String color;
 }
