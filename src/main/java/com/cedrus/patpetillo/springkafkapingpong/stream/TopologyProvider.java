@@ -4,7 +4,10 @@ import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTarget;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -23,6 +26,7 @@ public class TopologyProvider {
     private final TopicConfig topicConfig;
     private final AppConfig appConfig;
     private final ObjectMapper objectMapper;
+    private Integer count = 0;
 
     @Autowired
     public TopologyProvider(TopicConfig topicConfig, AppConfig appConfig, ObjectMapper objectMapper){
@@ -38,11 +42,29 @@ public class TopologyProvider {
 
         final KStream<String, String> incomingStream = builder.stream(topicConfig.getTopicName(), Consumed.with(Serdes.String(), Serdes.String()));
 
-        final KStream<String, String> filteredStream = incomingStream.branch((key, value) -> {
+        final KStream<String, String> pingPongStream = incomingStream.filter((key, value) -> value.contains("pingPongTarget"));
+
+        final KStream<String, String> filteredStream = pingPongStream.filter((key, value) -> {
             PingPongBall pingPongBall = deserialize(value);
             log.info("deserialize value: {}", pingPongBall);
             return pingPongBall.getPingPongTarget().equals(pingPongTarget);
-        })[0];
+        });
+
+        final KStream<String, String> volleyCount = filteredStream
+                .groupByKey()
+                .count()
+                .mapValues((key, value) -> {
+                    ObjectNode volleyCountJSON = JsonNodeFactory.instance.objectNode();
+                    final String mapValue = value.toString();
+                    log.debug("Mapping values: {}", mapValue);
+                    volleyCountJSON.put("ballId", key);
+                    volleyCountJSON.put("volleyCount", mapValue);
+                    final String volleyCountString = serializeVolleyCount(volleyCountJSON);
+                    return volleyCountString;
+                })
+                .toStream();
+
+        volleyCount.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
 
         final KStream<String, String> loggedAndDelayedStream = filteredStream.transformValues(getLogsAndDelay());
 
@@ -55,7 +77,7 @@ public class TopologyProvider {
         try {
             return objectMapper.readValue(pingPongBallString, PingPongBall.class);
         } catch (Exception e) {
-            log.debug("Deserialize error: {}", pingPongBallString);
+            log.debug("Deserialize Ping Pong ball error: {}", pingPongBallString);
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +86,16 @@ public class TopologyProvider {
         try {
             return objectMapper.writeValueAsString(pingPongBall);
         } catch (Exception e) {
-            log.debug("Serialize error: {}", pingPongBall);
+            log.debug("Serialize Ping Pong ball error: {}", pingPongBall);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String serializeVolleyCount(JsonNode volleyCount) {
+        try {
+            return objectMapper.writeValueAsString(volleyCount);
+        } catch (Exception e) {
+            log.debug("Serialize volley count error: {}", volleyCount);
             throw new RuntimeException(e);
         }
     }
@@ -95,6 +126,24 @@ public class TopologyProvider {
                 log.info("Returning ping pong ball: {}", pingPongBall);
                 pingPongBall.returnBall();
                 return serialize(pingPongBall);
+            }
+
+            @Override
+            public void close() {}
+        };
+    }
+
+    private ValueTransformerSupplier<String, String> getFormattedVolleyCount(JsonNode volleyCount) {
+        return () -> new ValueTransformer<String, String>() {
+            @Override
+            public void init(ProcessorContext context) {}
+
+            @Override
+            public String transform(String value) {
+                log.debug("Volley count received");
+                log.info("Transforming volley count: {}", value);
+
+                return serializeVolleyCount(volleyCount);
             }
 
             @Override
