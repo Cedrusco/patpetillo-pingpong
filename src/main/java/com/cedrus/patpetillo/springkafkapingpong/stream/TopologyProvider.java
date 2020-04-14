@@ -26,7 +26,6 @@ public class TopologyProvider {
     private final TopicConfig topicConfig;
     private final AppConfig appConfig;
     private final ObjectMapper objectMapper;
-    private Integer count = 0;
 
     @Autowired
     public TopologyProvider(TopicConfig topicConfig, AppConfig appConfig, ObjectMapper objectMapper){
@@ -126,24 +125,6 @@ public class TopologyProvider {
                 log.info("Returning ping pong ball: {}", pingPongBall);
                 pingPongBall.returnBall();
                 return serialize(pingPongBall);
-            }
-
-            @Override
-            public void close() {}
-        };
-    }
-
-    private ValueTransformerSupplier<String, String> getFormattedVolleyCount(JsonNode volleyCount) {
-        return () -> new ValueTransformer<String, String>() {
-            @Override
-            public void init(ProcessorContext context) {}
-
-            @Override
-            public String transform(String value) {
-                log.debug("Volley count received");
-                log.info("Transforming volley count: {}", value);
-
-                return serializeVolleyCount(volleyCount);
             }
 
             @Override
