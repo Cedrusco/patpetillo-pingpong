@@ -17,8 +17,8 @@ public class PingPongBallService {
 
     public void serveBall(PingPongBall pingPongBall) {
         try {
-            String ballId = pingPongBall.getId();
-            String pingPongBallJSON = objectMapper.writeValueAsString(pingPongBall);
+            final String ballId = pingPongBall.getId();
+            final String pingPongBallJSON = objectMapper.writeValueAsString(pingPongBall);
             pingPongProducer.sendMessage(pingPongBallJSON, ballId);
         } catch (Exception e) {
             throw new RuntimeException();

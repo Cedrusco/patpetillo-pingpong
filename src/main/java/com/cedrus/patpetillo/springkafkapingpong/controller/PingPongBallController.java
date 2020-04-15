@@ -35,8 +35,8 @@ public class PingPongBallController {
     private ResponseEntity<ServeBallResponse> createBall(ServeBallRequest serveBallRequest) {
         log.info("Creating ball: {}", serveBallRequest);
         try {
-            String reqColor = serveBallRequest.getColor();
-            Color color = Color.valueOf(reqColor);
+            final String reqColor = serveBallRequest.getColor();
+            final Color color = Color.valueOf(reqColor);
             try {
                 final PingPongBall pingPongBall = new PingPongBall(serveBallRequest.getId(), PingPongTarget.PING, color);
                 pingPongBallService.serveBall(pingPongBall);
@@ -45,14 +45,14 @@ public class PingPongBallController {
                 return new ResponseEntity<>(serveBallResponse, HttpStatus.OK);
             } catch (RuntimeException e) {
                 log.error("Runtime except when trying to create ball", e);
-                ServeBallResponse serveBallResponse = new ServeBallResponse(false, e.getMessage(), "INTERNAL_SERVER_ERROR");
+                ServeBallResponse serveBallResponse = new ServeBallResponse(false, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
                 return new ResponseEntity<>(serveBallResponse, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (IllegalArgumentException e) {
             log.error("Invalid ping pong ball color: {}", serveBallRequest.getColor());
 
-            ServeBallResponse serveBallResponse = new ServeBallResponse(false, String.format("Invalid ping pong ball color: %s", serveBallRequest.getColor()), "INVALID_COLOR");
+            ServeBallResponse serveBallResponse = new ServeBallResponse(false, String.format("Invalid ping pong ball color: %s", serveBallRequest.getColor()), HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(serveBallResponse, HttpStatus.BAD_REQUEST);
         }
     }

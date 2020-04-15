@@ -25,14 +25,14 @@ public class PongService {
     }
 
     public void startPongStream() {
-        Properties props = new Properties();
+        final Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, kafkaConfig.getKafkaAppId() + PingPongTarget.PONG);
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put("AUTO_OFFSET_RESET_CONFIG", kafkaConfig.getAutoOffsetReset());
 
-        KafkaStreams pongStream = new KafkaStreams(topologyProvider.getTopology(PingPongTarget.PONG), props);
+        final KafkaStreams pongStream = new KafkaStreams(topologyProvider.getTopology(PingPongTarget.PONG), props);
 
         pongStream.start();
 

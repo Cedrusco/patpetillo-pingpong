@@ -10,14 +10,12 @@ import org.slf4j.MarkerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import static org.apache.kafka.common.requests.FetchMetadata.log;
 
 @SpringBootApplication
-@EnableConfigurationProperties({AppConfig.class, KafkaConfig.class, TopicConfig.class})
 public class SpringKafkaPingPongApplication {
 
 	public static final Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");

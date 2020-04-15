@@ -41,15 +41,34 @@ public class TopologyProvider {
 
         final KStream<String, String> incomingStream = builder.stream(topicConfig.getTopicName(), Consumed.with(Serdes.String(), Serdes.String()));
 
-        final KStream<String, String> pingPongStream = incomingStream.filter((key, value) -> value.contains("pingPongTarget"));
+        final KStream<String, String> pingPongStream = getPingPongStream(incomingStream, pingPongTarget);
 
-        final KStream<String, String> filteredStream = pingPongStream.filter((key, value) -> {
-            PingPongBall pingPongBall = deserialize(value);
-            log.info("deserialize value: {}", pingPongBall);
-            return pingPongBall.getPingPongTarget().equals(pingPongTarget);
-        });
+        final KTable<String, String> volleyCount = getVolleyCountTable(pingPongStream);
 
-        final KStream<String, String> volleyCount = filteredStream
+        final KStream<String, String> loggedAndDelayedStream = pingPongStream.transformValues(getLogsAndDelay());
+
+        loggedAndDelayedStream.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
+
+        volleyCount.toStream().to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
+
+        return builder.build();
+    }
+
+    private KStream<String, String> getPingPongStream(KStream<String, String> incomingStream, PingPongTarget pingPongTarget) {
+        final KStream<String, String> pingPongStream = incomingStream
+                // Ensure we aren't processing volleyCount stream
+                .filter((key, value) -> value.contains("pingPongTarget"))
+                .filter((key, value) -> {
+                    PingPongBall pingPongBall = deserialize(value);
+                    log.info("deserialize value: {}", pingPongBall);
+                    return pingPongBall.getPingPongTarget().equals(pingPongTarget);
+                });
+
+        return pingPongStream;
+    }
+
+    private KTable<String, String> getVolleyCountTable(KStream<String, String> filteredPingPongStream) {
+        final KTable<String, String> volleyCountTable = filteredPingPongStream
                 .groupByKey()
                 .count()
                 .mapValues((key, value) -> {
@@ -58,18 +77,10 @@ public class TopologyProvider {
                     log.debug("Mapping values: {}", mapValue);
                     volleyCountJSON.put("ballId", key);
                     volleyCountJSON.put("volleyCount", mapValue);
-                    final String volleyCountString = serializeVolleyCount(volleyCountJSON);
-                    return volleyCountString;
-                })
-                .toStream();
+                    return serializeVolleyCount(volleyCountJSON);
+                });
 
-        volleyCount.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
-
-        final KStream<String, String> loggedAndDelayedStream = filteredStream.transformValues(getLogsAndDelay());
-
-        loggedAndDelayedStream.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
-
-        return builder.build();
+        return volleyCountTable;
     }
 
     private PingPongBall deserialize(String pingPongBallString) {
