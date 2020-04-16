@@ -19,11 +19,11 @@ public class PingPongBallDAOImpl implements PingPongBallDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    private final String SQL_GET_ALL = "select * from pingpong";
-    private final String SQL_FIND_PINGPONGBALL = "select * from pingpong where id = ?";
-    private final String SQL_INSERT_PINGPONGBALL = "insert into pingpong(id, target, color) values(?,?,?)";
-    private final String SQL_UPDATE_PINGPONGBALL = "update pingpong set target = ?, color = ? where id = ?";
-    private final String SQL_DELETE_PINGPONGBALL = "delete from pingpong where id = ?";
+    private final String SQL_GET_ALL = "SELECT * FROM PINGPONG";
+    private final String SQL_FIND_PINGPONGBALL = "SELECT * FROM PINGPONG WHERE ID = ?";
+    private final String SQL_INSERT_PINGPONGBALL = "INSERT INTO PINGPONG(ID, TARGET, COLOR) VALUES(?,?,?)";
+    private final String SQL_UPDATE_PINGPONGBALL = "UPDATE PINGPONG SET TARGET = ?, COLOR = ? WHERE ID = ?";
+    private final String SQL_DELETE_PINGPONGBALL = "DELETE FROM PINGPONG WHERE ID = ?";
 
     public List<PingPongBall> getAllPingPongBalls() {
         return jdbcTemplate.query(SQL_GET_ALL, new PingPongBallMapper());

@@ -5,17 +5,22 @@ import com.cedrus.patpetillo.springkafkapingpong.dao.PingPongBallDAO;
 import com.cedrus.patpetillo.springkafkapingpong.model.Color;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTarget;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Random;
 
-public class Main {
-    public static void main(String[] args) {
+@Slf4j
+public class DAOTest {
+
+    @Test
+    public void testDAO() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class);
 
         PingPongBallDAO pingPongBallDAO = context.getBean(PingPongBallDAO.class);
 
-        System.out.println("Create a few mock ping pong balls...");
+        log.info("\nCreate a few mock ping pong balls...");
         for (int i = 1; i < 10; i++) {
             PingPongTarget randomTarget = getRandomTarget();
             Color randomColor = getRandomColor();
@@ -23,44 +28,49 @@ public class Main {
             pingPongBallDAO.createPingPongBall(pingPongBall);
         }
 
-        System.out.println("List of PingPongBalls is:");
-
+        log.info("\nList of PingPongBalls is:");
         for (PingPongBall p : pingPongBallDAO.getAllPingPongBalls()) {
-            System.out.println(p);
+            log.info("{}", p);
         }
 
-        System.out.println("\nGet PingPongBall with ID 7");
-
+        log.info("\nGet PingPongBall with ID 7");
         PingPongBall pingPongBallById = pingPongBallDAO.getPingPongBallById("7");
-        System.out.println(pingPongBallById);
+        log.info("{}", pingPongBallById);
 
-        System.out.println("\nDeleting PingPongBall with ID 7");
+        log.info("\nDeleting PingPongBall with ID 7");
         pingPongBallDAO.deletePingPongBall(pingPongBallById);
 
-        System.out.println("\nUpdate PingPongBall with ID 1");
-
+        log.info("\nUpdate PingPongBall with ID 1");
         PingPongBall pingPongBall1 = pingPongBallDAO.getPingPongBallById("1");
         pingPongBall1.setColor(Color.RED);
         pingPongBall1.setPingPongTarget(PingPongTarget.PONG);
         pingPongBallDAO.updatePingPongBall(pingPongBall1);
 
-        System.out.println("\nList of PingPongBalls is:");
+        log.info("\nList of PingPongBalls is:");
         for (PingPongBall p : pingPongBallDAO.getAllPingPongBalls()) {
-            System.out.println(p);
+            log.info("{}", p);
         }
+
+        log.info("\nCleaning up database:");
+        for (PingPongBall p : pingPongBallDAO.getAllPingPongBalls()) {
+            log.info("\nDeleting PingPongBall: {}", p);
+            pingPongBallDAO.deletePingPongBall((p));
+        }
+
+        log.info("\nCleanup complete...");
 
         context.close();
     }
 
-    final static Color[] colors = Color.values();
-    final static PingPongTarget[] pingPongTargets = PingPongTarget.values();
-    final static Random random = new Random();
+    final Color[] colors = Color.values();
+    final PingPongTarget[] pingPongTargets = PingPongTarget.values();
+    final Random random = new Random();
 
-    private static Color getRandomColor() {
+    private Color getRandomColor() {
         return colors[random.nextInt(colors.length)];
     }
 
-    private static PingPongTarget getRandomTarget() {
+    private PingPongTarget getRandomTarget() {
         return pingPongTargets[random.nextInt(pingPongTargets.length)];
     }
 }
