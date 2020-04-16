@@ -15,4 +15,9 @@ public class PingPongBall {
     public void returnBall() {
         this.pingPongTarget = pingPongTarget.equals(PingPongTarget.PING) ? PingPongTarget.PONG : PingPongTarget.PING;
     }
+
+    @Override
+    public String toString() {
+        return "Ping Pong Ball: {" + "id=" + id + ", target=" + pingPongTarget + ", color='" + color + '}';
+    }
 }
