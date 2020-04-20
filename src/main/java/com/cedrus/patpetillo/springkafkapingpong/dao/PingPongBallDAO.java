@@ -1,17 +1,47 @@
 package com.cedrus.patpetillo.springkafkapingpong.dao;
 
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBallMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public interface PingPongBallDAO {
-    List<PingPongBall> getAllPingPongBalls();
+@AllArgsConstructor
+@Component
+public class PingPongBallDAO {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    PingPongBall getPingPongBallById(String id);
+    @Autowired
+    private PingPongBallMapper pingPongBallMapper;
 
-    int createPingPongBall(PingPongBall pingPongBall);
+    private final static String SQL_INSERT_PINGPONGBALL = "INSERT INTO PINGPONG(ID, TARGET, COLOR) VALUES(?,?,?)";
+    private final static String SQL_GET_ALL = "SELECT * FROM PINGPONG";
+    private final static String SQL_FIND_PINGPONGBALL = "SELECT * FROM PINGPONG WHERE ID = ?";
+    private final static String SQL_UPDATE_PINGPONGBALL = "UPDATE PINGPONG SET TARGET = ?, COLOR = ? WHERE ID = ?";
+    private final static String SQL_DELETE_PINGPONGBALL = "DELETE FROM PINGPONG WHERE ID = ?";
 
-    int updatePingPongBall(PingPongBall pingPongBall);
+    public int createPingPongBall(PingPongBall pingPongBall) {
+        return jdbcTemplate.update(SQL_INSERT_PINGPONGBALL, pingPongBall.getId(), pingPongBall.getPingPongTarget().name(), pingPongBall.getColor().name());
+    }
 
-    int deletePingPongBall(PingPongBall pingPongBall);
+    public List<PingPongBall> getAllPingPongBalls() {
+        return jdbcTemplate.query(SQL_GET_ALL, pingPongBallMapper);
+    }
+
+    public PingPongBall getPingPongBallById(String id) {
+        return jdbcTemplate.queryForObject(SQL_FIND_PINGPONGBALL, new Object[]{ id }, pingPongBallMapper);
+    }
+
+    public int updatePingPongBall(PingPongBall pingPongBall) {
+        return jdbcTemplate.update(SQL_UPDATE_PINGPONGBALL, pingPongBall.getPingPongTarget().name(), pingPongBall.getColor().name(), pingPongBall.getId());
+    }
+
+    public int deletePingPongBall(PingPongBall pingPongBall) {
+        return jdbcTemplate.update(SQL_DELETE_PINGPONGBALL, pingPongBall.getId());
+    }
+
 }
