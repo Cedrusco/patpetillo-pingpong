@@ -1,5 +1,6 @@
 package com.cedrus.patpetillo.springkafkapingpong.controller;
 
+import com.cedrus.patpetillo.springkafkapingpong.dao.PingPongBallDAO;
 import com.cedrus.patpetillo.springkafkapingpong.model.*;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PingPongBallService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class PingPongBallController {
 
     private final PingPongBallService pingPongBallService;
+    @Autowired
+    private PingPongBallDAO pingPongBallDAO;
 
     @Autowired
     public PingPongBallController(PingPongBallService pingPongBallService) {
@@ -24,7 +27,7 @@ public class PingPongBallController {
         return "Ping Pong application running...";
     }
 
-    @PostMapping(value = "/serve")
+    @PostMapping("/serve")
     public ResponseEntity<ServeBallResponse> serveBall(@RequestBody ServeBallRequest serveBallRequest) { {
             log.debug("Serve ball request: {}", serveBallRequest);
         }

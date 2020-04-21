@@ -43,13 +43,9 @@ public class TopologyProvider {
 
         final KStream<String, String> pingPongStream = getPingPongStream(incomingStream, pingPongTarget);
 
-        final KTable<String, String> volleyCount = getVolleyCountTable(pingPongStream);
-
         final KStream<String, String> loggedAndDelayedStream = pingPongStream.transformValues(getLogsAndDelay());
 
         loggedAndDelayedStream.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
-
-        volleyCount.toStream().to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
 
         return builder.build();
     }
@@ -67,21 +63,6 @@ public class TopologyProvider {
         return pingPongStream;
     }
 
-    private KTable<String, String> getVolleyCountTable(KStream<String, String> filteredPingPongStream) {
-        final KTable<String, String> volleyCountTable = filteredPingPongStream
-                .groupByKey()
-                .count()
-                .mapValues((key, value) -> {
-                    ObjectNode volleyCountJSON = JsonNodeFactory.instance.objectNode();
-                    final String mapValue = value.toString();
-                    log.debug("Mapping values: {}", mapValue);
-                    volleyCountJSON.put("ballId", key);
-                    volleyCountJSON.put("volleyCount", mapValue);
-                    return serializeVolleyCount(volleyCountJSON);
-                });
-
-        return volleyCountTable;
-    }
 
     private PingPongBall deserialize(String pingPongBallString) {
         try {
@@ -97,15 +78,6 @@ public class TopologyProvider {
             return objectMapper.writeValueAsString(pingPongBall);
         } catch (Exception e) {
             log.debug("Serialize Ping Pong ball error: {}", pingPongBall);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String serializeVolleyCount(JsonNode volleyCount) {
-        try {
-            return objectMapper.writeValueAsString(volleyCount);
-        } catch (Exception e) {
-            log.debug("Serialize volley count error: {}", volleyCount);
             throw new RuntimeException(e);
         }
     }

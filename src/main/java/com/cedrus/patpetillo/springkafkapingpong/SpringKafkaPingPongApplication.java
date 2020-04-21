@@ -1,8 +1,5 @@
 package com.cedrus.patpetillo.springkafkapingpong;
 
-import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
-import com.cedrus.patpetillo.springkafkapingpong.config.KafkaConfig;
-import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PingService;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PongService;
 import org.slf4j.Marker;
