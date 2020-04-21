@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PingPongBall {
     private String id;
-    private PingPongTarget pingPongTarget;
+    private PingPongTeam pingPongTeam;
     private Color color;
 
     public void returnBall() {
-        this.pingPongTarget = pingPongTarget.equals(PingPongTarget.PING) ? PingPongTarget.PONG : PingPongTarget.PING;
+        this.pingPongTeam = pingPongTeam.equals(PingPongTeam.REDTEAM) ? PingPongTeam.BLUETEAM : PingPongTeam.REDTEAM;
     }
 }

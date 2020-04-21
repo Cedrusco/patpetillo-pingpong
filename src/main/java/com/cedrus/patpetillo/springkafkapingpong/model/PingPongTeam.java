@@ -1,6 +1,6 @@
 package com.cedrus.patpetillo.springkafkapingpong.model;
 
-public enum PingPongTarget {
-    PING,
-    PONG
+public enum PingPongTeam {
+    REDTEAM,
+    BLUETEAM
 }

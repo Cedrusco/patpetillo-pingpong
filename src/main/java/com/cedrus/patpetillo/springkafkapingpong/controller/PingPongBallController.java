@@ -41,7 +41,7 @@ public class PingPongBallController {
             final String reqColor = serveBallRequest.getColor();
             final Color color = Color.valueOf(reqColor);
             try {
-                final PingPongBall pingPongBall = new PingPongBall(serveBallRequest.getId(), PingPongTarget.PING, color);
+                final PingPongBall pingPongBall = new PingPongBall(serveBallRequest.getId(), PingPongTeam.REDTEAM, color);
                 pingPongBallService.serveBall(pingPongBall);
                 ServeBallResponse serveBallResponse = new ServeBallResponse(true);
 
