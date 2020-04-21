@@ -55,8 +55,6 @@ public class TopologyProvider {
                     return pingPongBall.getPingPongTeam().equals(pingPongTeam);
                 });
 
-        log.debug("getPingPongStream: {}", pingPongStream);
-
         return pingPongStream;
     }
 
