@@ -19,7 +19,7 @@ public class PingPongBallService {
         try {
             final String pingPongBallJSON = objectMapper.writeValueAsString(pingPongBall);
 
-            pingPongProducer.sendMessage(pingPongBallJSON);
+            pingPongProducer.sendMessage(pingPongBallJSON, null);
         } catch (Exception e) {
             throw new RuntimeException();
         }

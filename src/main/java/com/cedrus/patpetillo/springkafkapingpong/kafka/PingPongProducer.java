@@ -22,7 +22,7 @@ public class PingPongProducer {
         this.topicConfig = topicConfig;
     }
 
-    public void sendMessage(String event) {
+    public void sendMessage(String event, String key) {
         log.debug("Sending event: {}", event);
 
         final Properties props = new Properties();
@@ -33,7 +33,7 @@ public class PingPongProducer {
 
         final KafkaProducer<String, String> producer = new KafkaProducer(props);
 
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), null, event);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), key, event);
         producer.send(producerRecord);
         producer.close();
     }
