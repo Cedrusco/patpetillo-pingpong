@@ -25,7 +25,7 @@ public class PingPongBallDAO {
     private final static String SQL_DELETE_PINGPONGBALL = "DELETE FROM PINGPONG WHERE ID = ?";
 
     public int createPingPongBall(PingPongBall pingPongBall) {
-        return jdbcTemplate.update(SQL_INSERT_PINGPONGBALL, pingPongBall.getId(), pingPongBall.getPingPongTarget().name(), pingPongBall.getColor().name());
+        return jdbcTemplate.update(SQL_INSERT_PINGPONGBALL, pingPongBall.getId(), pingPongBall.getPingPongTeam().name(), pingPongBall.getColor().name());
     }
 
     public List<PingPongBall> getAllPingPongBalls() {
@@ -37,7 +37,7 @@ public class PingPongBallDAO {
     }
 
     public int updatePingPongBall(PingPongBall pingPongBall) {
-        return jdbcTemplate.update(SQL_UPDATE_PINGPONGBALL, pingPongBall.getPingPongTarget().name(), pingPongBall.getColor().name(), pingPongBall.getId());
+        return jdbcTemplate.update(SQL_UPDATE_PINGPONGBALL, pingPongBall.getPingPongTeam().name(), pingPongBall.getColor().name(), pingPongBall.getId());
     }
 
     public int deletePingPongBall(PingPongBall pingPongBall) {

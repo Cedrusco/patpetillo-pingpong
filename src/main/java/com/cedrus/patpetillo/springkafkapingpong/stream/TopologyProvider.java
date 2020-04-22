@@ -3,11 +3,8 @@ package com.cedrus.patpetillo.springkafkapingpong.stream;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
-import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTarget;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTeam;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -34,14 +31,16 @@ public class TopologyProvider {
         this.objectMapper = objectMapper;
     }
 
-    public Topology getTopology(PingPongTarget pingPongTarget) {
+    public Topology getTopology(PingPongTeam pingPongTeam) {
         final StreamsBuilder builder = new StreamsBuilder();
         log.info("Stream builder initialized");
-        log.info(pingPongTarget.toString());
+        log.info(pingPongTeam.toString());
 
         final KStream<String, String> incomingStream = builder.stream(topicConfig.getTopicName(), Consumed.with(Serdes.String(), Serdes.String()));
 
-        final KStream<String, String> pingPongStream = getPingPongStream(incomingStream, pingPongTarget);
+        final KStream<String, String> pingPongStream = incomingStream.branch(getTargetFilterPredicate(pingPongTeam))[0];
+
+        log.debug("pingPongStream: {}", pingPongStream);
 
         final KStream<String, String> loggedAndDelayedStream = pingPongStream.transformValues(getLogsAndDelay());
 
@@ -50,19 +49,12 @@ public class TopologyProvider {
         return builder.build();
     }
 
-    private KStream<String, String> getPingPongStream(KStream<String, String> incomingStream, PingPongTarget pingPongTarget) {
-        final KStream<String, String> pingPongStream = incomingStream
-                // Ensure we aren't processing volleyCount stream
-                .filter((key, value) -> value.contains("pingPongTarget"))
-                .filter((key, value) -> {
-                    PingPongBall pingPongBall = deserialize(value);
-                    log.info("deserialize value: {}", pingPongBall);
-                    return pingPongBall.getPingPongTarget().equals(pingPongTarget);
-                });
-
-        return pingPongStream;
+    private Predicate<String, String> getTargetFilterPredicate(PingPongTeam pingPongTeam) {
+        return (key, value) -> {
+            PingPongBall pingPongBall = deserialize(value);
+            return pingPongBall.getPingPongTeam().equals(pingPongTeam);
+        };
     }
-
 
     private PingPongBall deserialize(String pingPongBallString) {
         try {

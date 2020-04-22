@@ -1,7 +1,9 @@
 package com.cedrus.patpetillo.springkafkapingpong;
 
-import com.cedrus.patpetillo.springkafkapingpong.stream.PingService;
-import com.cedrus.patpetillo.springkafkapingpong.stream.PongService;
+import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerFourService;
+import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerOneService;
+import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerThreeService;
+import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerTwoService;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -22,11 +24,11 @@ public class SpringKafkaPingPongApplication {
 	}
 
 	@Bean
-	public CommandLineRunner pingPongRunner(ApplicationContext ctx) {
+	public CommandLineRunner playerOneRunner(ApplicationContext ctx) {
 		try {
 			return args -> {
-				log.info("Ping stream starting...");
-				((PingService) ctx.getBean("pingService")).startPingStream();
+				log.info("Player One stream starting...");
+				((PlayerOneService) ctx.getBean("playerOneService")).startPlayerOneService();
 			};
 		} catch (RuntimeException rex) {
 			log.error(
@@ -39,11 +41,45 @@ public class SpringKafkaPingPongApplication {
 	}
 
 	@Bean
-	public CommandLineRunner pongRunner(ApplicationContext ctx) {
+	public CommandLineRunner playerTwoRunner(ApplicationContext ctx) {
 		try {
 			return args -> {
-				log.info("Pong stream starting...");
-				((PongService) ctx.getBean("pongService")).startPongStream();
+				log.info("Player Two Stream starting...");
+				((PlayerTwoService) ctx.getBean("playerTwoService")).startPlayerTwoService();
+			};
+		} catch (RuntimeException rex) {
+			log.error(
+					FATAL_MARKER,
+					"RuntimeException encountered when trying to start the service using CommandLineRunner message={}",
+					rex.getMessage());
+			log.error("RuntimeException", rex);
+			throw rex;
+		}
+	}
+
+	@Bean
+	public CommandLineRunner playerThreeRunner(ApplicationContext ctx) {
+		try {
+			return args -> {
+				log.info("Player Three stream starting...");
+				((PlayerThreeService) ctx.getBean("playerThreeService")).startPlayerThreeService();
+			};
+		} catch (RuntimeException rex) {
+			log.error(
+					FATAL_MARKER,
+					"RuntimeException encountered when trying to start the service using CommandLineRunner message={}",
+					rex.getMessage());
+			log.error("RuntimeException", rex);
+			throw rex;
+		}
+	}
+
+	@Bean
+	public CommandLineRunner playerFourRunner(ApplicationContext ctx) {
+		try {
+			return args -> {
+				log.info("Ping stream starting...");
+				((PlayerFourService) ctx.getBean("playerFourService")).startPlayerFourService();
 			};
 		} catch (RuntimeException rex) {
 			log.error(
