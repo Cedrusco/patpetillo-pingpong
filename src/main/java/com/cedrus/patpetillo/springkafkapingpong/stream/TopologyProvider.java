@@ -38,7 +38,9 @@ public class TopologyProvider {
 
         final KStream<String, String> incomingStream = builder.stream(topicConfig.getTopicName(), Consumed.with(Serdes.String(), Serdes.String()));
 
-        final KStream<String, String> pingPongStream = getPingPongStream(incomingStream, pingPongTeam);
+        final KStream<String, String> pingPongStream = incomingStream.branch(getTargetFilterPredicate(pingPongTeam))[0];
+
+        log.debug("pingPongStream: {}", pingPongStream);
 
         final KStream<String, String> loggedAndDelayedStream = pingPongStream.transformValues(getLogsAndDelay());
 
@@ -47,15 +49,11 @@ public class TopologyProvider {
         return builder.build();
     }
 
-    private KStream<String, String> getPingPongStream(KStream<String, String> incomingStream, PingPongTeam pingPongTeam) {
-        final KStream<String, String> pingPongStream = incomingStream
-                .filter((key, value) -> {
-                    PingPongBall pingPongBall = deserialize(value);
-                    log.info("deserialize value: {}", pingPongBall);
-                    return pingPongBall.getPingPongTeam().equals(pingPongTeam);
-                });
-
-        return pingPongStream;
+    private Predicate<String, String> getTargetFilterPredicate(PingPongTeam pingPongTeam) {
+        return (key, value) -> {
+            PingPongBall pingPongBall = deserialize(value);
+            return pingPongBall.getPingPongTeam().equals(pingPongTeam);
+        };
     }
 
     private PingPongBall deserialize(String pingPongBallString) {
