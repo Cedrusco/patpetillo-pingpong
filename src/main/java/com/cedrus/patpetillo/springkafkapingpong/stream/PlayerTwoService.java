@@ -36,7 +36,7 @@ public class PlayerTwoService {
 
         log.info("Player Two on team: {}", team);
 
-        final KafkaStreams pongStream = new KafkaStreams(topologyProvider.getTopology(PingPongTeam.BLUETEAM), props);
+        final KafkaStreams pongStream = new KafkaStreams(topologyProvider.getTopology(PingPongTeam.BLUETEAM, PlayerTwoService.class.getSimpleName()), props);
 
         pongStream.start();
 

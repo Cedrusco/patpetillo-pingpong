@@ -1,7 +1,7 @@
 package com.cedrus.patpetillo.springkafkapingpong.dao;
 
-import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
-import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBallMapper;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongEventMapper;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,35 +13,50 @@ import java.util.List;
 @Component
 public class PingPongBallDAO {
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private PingPongBallMapper pingPongBallMapper;
+    private final PingPongEventMapper pingPongEventMapper;
 
-    private final static String SQL_INSERT_PINGPONGBALL = "INSERT INTO PINGPONG(ID, TARGET, COLOR) VALUES(?,?,?)";
-    private final static String SQL_GET_ALL = "SELECT * FROM PINGPONG";
-    private final static String SQL_FIND_PINGPONGBALL = "SELECT * FROM PINGPONG WHERE ID = ?";
-    private final static String SQL_UPDATE_PINGPONGBALL = "UPDATE PINGPONG SET TARGET = ?, COLOR = ? WHERE ID = ?";
-    private final static String SQL_DELETE_PINGPONGBALL = "DELETE FROM PINGPONG WHERE ID = ?";
+    private final static String SQL_INSERT_PING_PONG_EVENT = "INSERT INTO ping_pong_event(key, action, server, time_stamp, ball_id, target, color) VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private final static String SQL_UPDATE_PING_PONG_EVENT = "UPDATE ping_pong_event SET key = ?, action = ?, server = ?, time_stamp = ?, ball_id, = ?, target = ?, color WHERE id = ?";
+    private final static String SQL_GET_ALL = "SELECT * FROM ping_pong_event";
+    private final static String SQL_FIND_PING_PONG_EVENT = "SELECT * FROM ping_pong_event WHERE id = ?";
+    private final static String SQL_DELETE_PING_PONG_EVENT = "DELETE FROM ping_pong_event WHERE id = ?";
 
-    public int createPingPongBall(PingPongBall pingPongBall) {
-        return jdbcTemplate.update(SQL_INSERT_PINGPONGBALL, pingPongBall.getId(), pingPongBall.getPingPongTeam().name(), pingPongBall.getColor().name());
+    public void createPingPongEvent(PingPongEvent pingPongEvent) {
+        jdbcTemplate.update(SQL_INSERT_PING_PONG_EVENT,
+                pingPongEvent.getKey(),
+                pingPongEvent.getAction().name(),
+                pingPongEvent.getServer(),
+                pingPongEvent.getTimeStamp(),
+                pingPongEvent.getPingPongBall().getId(),
+                pingPongEvent.getPingPongBall().getPingPongTeam().name(),
+                pingPongEvent.getPingPongBall().getColor().name());
     }
 
-    public List<PingPongBall> getAllPingPongBalls() {
-        return jdbcTemplate.query(SQL_GET_ALL, pingPongBallMapper);
+    public void updatePingPongEvent(PingPongEvent pingPongEvent) {
+        jdbcTemplate.update(SQL_UPDATE_PING_PONG_EVENT,
+                pingPongEvent.getKey(),
+                pingPongEvent.getAction().name(),
+                pingPongEvent.getServer(),
+                pingPongEvent.getTimeStamp(),
+                pingPongEvent.getPingPongBall().getId(),
+                pingPongEvent.getPingPongBall().getPingPongTeam().name(),
+                pingPongEvent.getPingPongBall().getColor().name());
     }
 
-    public PingPongBall getPingPongBallById(String id) {
-        return jdbcTemplate.queryForObject(SQL_FIND_PINGPONGBALL, new Object[]{ id }, pingPongBallMapper);
+    public List<PingPongEvent> getAllPingPongEvents() {
+        return jdbcTemplate.query(SQL_GET_ALL, pingPongEventMapper);
     }
 
-    public int updatePingPongBall(PingPongBall pingPongBall) {
-        return jdbcTemplate.update(SQL_UPDATE_PINGPONGBALL, pingPongBall.getPingPongTeam().name(), pingPongBall.getColor().name(), pingPongBall.getId());
+    public PingPongEvent getPingPongEventById(String id) {
+        return jdbcTemplate.queryForObject(SQL_FIND_PING_PONG_EVENT, new Object[]{ id }, pingPongEventMapper);
     }
 
-    public int deletePingPongBall(PingPongBall pingPongBall) {
-        return jdbcTemplate.update(SQL_DELETE_PINGPONGBALL, pingPongBall.getId());
+    public int deletePingPongEvent(PingPongEvent pingPongEvent) {
+        return jdbcTemplate.update(SQL_DELETE_PING_PONG_EVENT, pingPongEvent.getId());
     }
 
 }
+

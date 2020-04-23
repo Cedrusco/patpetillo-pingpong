@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.cedrus.patpetillo'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.3'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -35,4 +35,10 @@ dependencies {
 
 bootRun {
 	System.setProperty("spring.profiles.active", "default")
+}
+
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:unchecked'
+	options.deprecation = true
 }
