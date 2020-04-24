@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -31,7 +32,7 @@ public class PingPongProducer {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
-        final KafkaProducer<String, String> producer = new KafkaProducer(props);
+        final KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicConfig.getTopicName(), key, event);
         producer.send(producerRecord);

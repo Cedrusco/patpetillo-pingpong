@@ -36,3 +36,9 @@ dependencies {
 bootRun {
 	System.setProperty("spring.profiles.active", "default")
 }
+
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:unchecked'
+	options.deprecation = true
+}
