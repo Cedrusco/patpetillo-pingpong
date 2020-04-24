@@ -66,9 +66,6 @@ public class TopologyProvider {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
         final String timestamp = formatter.format(zonedDateTime);
 
-        log.debug("zonedDateTime: {}", zonedDateTime);
-        log.debug("formatter: {}", formatter);
-
         return stream.peek(((key, value) -> {
             PingPongEvent pingPongEvent = new PingPongEvent();
             final UUID uuid = UUID.randomUUID();
@@ -82,12 +79,13 @@ public class TopologyProvider {
             pingPongEvent.setPingPongBall(pingPongBall);
 
             pingPongBallDAO.createPingPongEvent(pingPongEvent);
+            log.info("Ping Pong event created: {}", pingPongEvent);
         }));
     }
 
     private KStream<String, String> getRandomUUID(KStream<String, String> stream) {
         UUID randomUUID = UUID.randomUUID();
-        log.debug("randomUUID: {}", randomUUID);
+
         return stream.selectKey((key, value) -> randomUUID.toString());
     }
 

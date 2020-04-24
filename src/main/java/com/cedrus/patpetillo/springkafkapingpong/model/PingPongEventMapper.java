@@ -13,7 +13,6 @@ import java.util.UUID;
 public class PingPongEventMapper implements RowMapper<PingPongEvent> {
 
     public PingPongEvent mapRow(ResultSet resultSet, int i) throws SQLException {
-        log.debug("resultSet: {}", resultSet);
         PingPongEvent pingPongEvent = new PingPongEvent();
         pingPongEvent.setId(resultSet.getObject("id", UUID.class));
         pingPongEvent.setKey(resultSet.getString("key"));
