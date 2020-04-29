@@ -1,0 +1,15 @@
+app:
+  minDelaySeconds: 3
+  maxDelaySeconds: 10
+  topic:
+    topicName: pingpongpatfourplayer
+kafka:
+  bootstrapServers: localhost:9092
+  kafkaAppId: pingPong
+  autoOffsetReset: latest
+datasource:
+    driverClassName: org.postgresql.Driver
+    jdbcUrl: jdbc:postgresql://127.0.0.1:5432/postgres
+    username: postgres
+    password: postgres
+logging.level.com.cedrus: DEBUG

@@ -1,0 +1,70 @@
+import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
+
+plugins {
+	id 'org.springframework.boot' version '2.1.13.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
+}
+
+group = 'com.cedrus.patpetillo'
+version = '0.0.3-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url = "${artifactory_repoURL}"
+		credentials {
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+		}
+	}
+	maven{
+		url 'https://packages.confluent.io/maven/'
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.kafka:spring-kafka'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
+	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.4-SNAPSHOT")
+	compile(group: 'org.apache.avro', name: 'avro', version: '1.9.2')
+	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')
+}
+
+bootRun {
+	System.setProperty("spring.profiles.active", "default")
+}
+
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:unchecked'
+	options.deprecation = true
+}
+
+apply plugin: 'com.commercehub.gradle.plugin.avro-base'
+task generateAvro(type: GenerateAvroJavaTask) {
+	source('src/main/resources/avro')
+	outputDir = file('src/main/generated')
+}
+
+tasks.withType(JavaCompile) {
+	source(generateAvro)
+}
