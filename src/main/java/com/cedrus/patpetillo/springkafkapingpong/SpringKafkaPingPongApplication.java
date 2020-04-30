@@ -11,9 +11,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.apache.kafka.common.requests.FetchMetadata.log;
 
+@ComponentScan(
+		basePackages = {
+				"com.cedrus.patpetillo.springkafkapingpong",
+				"com.cedrus.cloud.streaming.kafka.kafkacommon"
+		})
 @SpringBootApplication
 public class SpringKafkaPingPongApplication {
 

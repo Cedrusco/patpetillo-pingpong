@@ -1,5 +1,6 @@
 package com.cedrus.patpetillo.springkafkapingpong.model;
 
+import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class PingPongEvent {
     Action action;
     String server;
     String timeStamp;
-    PingPongBall pingPongBall;
+    PingPongBallEvent pingPongBallEvent;
 }

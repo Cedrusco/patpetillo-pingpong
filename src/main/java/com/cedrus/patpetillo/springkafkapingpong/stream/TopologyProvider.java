@@ -1,17 +1,20 @@
 package com.cedrus.patpetillo.springkafkapingpong.stream;
 
+import com.cedrus.cloud.streaming.kafka.kafkacommon.serialization.apicurio.AvroSerdeProvider;
+import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
-import com.cedrus.patpetillo.springkafkapingpong.config.TopicConfig;
 import com.cedrus.patpetillo.springkafkapingpong.dao.PingPongBallDAO;
 import com.cedrus.patpetillo.springkafkapingpong.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.apicurio.registry.client.RegistryService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.ProcessorContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -22,46 +25,41 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TopologyProvider {
 
-    private final TopicConfig topicConfig;
     private final AppConfig appConfig;
     private final ObjectMapper objectMapper;
     private final PingPongBallDAO pingPongBallDAO;
-
-    @Autowired
-    public TopologyProvider(TopicConfig topicConfig, AppConfig appConfig, ObjectMapper objectMapper, PingPongBallDAO pingPongBallDAO){
-        this.topicConfig = topicConfig;
-        this.appConfig = appConfig;
-        this.objectMapper = objectMapper;
-        this.pingPongBallDAO = pingPongBallDAO;
-    }
+    private final AvroSerdeProvider<PingPongBallEvent> pingPongBallEventAvroSerdeProvider;
+    private final RegistryService registryService;
 
     public Topology getTopology(PingPongTeam pingPongTeam, String server) {
         final StreamsBuilder builder = new StreamsBuilder();
+        final Serde<PingPongBallEvent> pingPongBallEventSerde = pingPongBallEventAvroSerdeProvider.getSerde(registryService, false);
 
         log.info("Stream builder initialized");
 
-        final KStream<String, String> incomingStream = builder.stream(topicConfig.getTopicName(), Consumed.with(Serdes.String(), Serdes.String()));
+        final KStream<String, PingPongBallEvent> incomingStream = builder.stream(appConfig.getTopicName(), Consumed.with(Serdes.String(), pingPongBallEventSerde));
 
-        final KStream<String, String>[] branches = incomingStream.branch(getTargetFilterPredicate(pingPongTeam));
+        final KStream<String, PingPongBallEvent>[] branches = incomingStream.branch(getTargetFilterPredicate(pingPongTeam));
 
-        final KStream<String, String> pingPongStream = branches[0];
+        final KStream<String, PingPongBallEvent> pingPongStream = branches[0];
 
-        KStream<String, String> unmodifiedIncomingStream = writeEventToDataStore(pingPongStream, Action.RECEIVING_BALL, server);
+        KStream<String, PingPongBallEvent> unmodifiedIncomingStream = writeEventToDataStore(pingPongStream, Action.RECEIVING_BALL, server);
 
-        final KStream<String, String> loggedAndDelayedStream = unmodifiedIncomingStream.transformValues(getLogsAndDelay());
+        final KStream<String, PingPongBallEvent> loggedAndDelayedStream = unmodifiedIncomingStream.transformValues(getLogsAndDelay());
 
-        final KStream<String, String> randomUUIDStream = getRandomUUID(loggedAndDelayedStream);
+        final KStream<String, PingPongBallEvent> randomUUIDStream = getRandomUUID(loggedAndDelayedStream);
 
-        KStream<String, String> unmodifiedOutGoingString = writeEventToDataStore(randomUUIDStream, Action.VOLLEYING_BALL, server);
+        KStream<String, PingPongBallEvent> unmodifiedOutGoingString = writeEventToDataStore(randomUUIDStream, Action.VOLLEYING_BALL, server);
 
-        unmodifiedOutGoingString.to(topicConfig.getTopicName(), Produced.with(Serdes.String(), Serdes.String()));
+        unmodifiedOutGoingString.to(appConfig.getTopicName(), Produced.with(Serdes.String(), pingPongBallEventSerde));
 
         return builder.build();
     }
 
-    private KStream<String, String> writeEventToDataStore(KStream<String, String> stream, Action action, String server) {
+    private KStream<String, PingPongBallEvent> writeEventToDataStore(KStream<String, PingPongBallEvent> stream, Action action, String server) {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
         final String timestamp = formatter.format(zonedDateTime);
@@ -75,25 +73,21 @@ public class TopologyProvider {
             pingPongEvent.setAction(action);
             pingPongEvent.setServer(server);
             pingPongEvent.setTimeStamp(timestamp);
-            PingPongBall pingPongBall = deserialize(value);
-            pingPongEvent.setPingPongBall(pingPongBall);
+            pingPongEvent.setPingPongBallEvent(value);
 
             pingPongBallDAO.createPingPongEvent(pingPongEvent);
             log.info("Ping Pong event created: {}", pingPongEvent);
         }));
     }
 
-    private KStream<String, String> getRandomUUID(KStream<String, String> stream) {
+    private KStream<String, PingPongBallEvent> getRandomUUID(KStream<String, PingPongBallEvent> stream) {
         UUID randomUUID = UUID.randomUUID();
 
         return stream.selectKey((key, value) -> randomUUID.toString());
     }
 
-    private Predicate<String, String> getTargetFilterPredicate(PingPongTeam pingPongTeam) {
-        return (key, value) -> {
-            PingPongBall pingPongBall = deserialize(value);
-            return pingPongBall.getPingPongTeam().equals(pingPongTeam);
-        };
+    private Predicate<String, PingPongBallEvent> getTargetFilterPredicate(PingPongTeam pingPongTeam) {
+        return (key, value) -> value.getPingPongTeam().equals(pingPongTeam.toString());
     }
 
     private PingPongBall deserialize(String pingPongBallString) {
@@ -114,15 +108,15 @@ public class TopologyProvider {
         }
     }
 
-    private ValueTransformerSupplier<String, String> getLogsAndDelay() {
-        return () -> new ValueTransformer<String, String>() {
+    private ValueTransformerSupplier<PingPongBallEvent, PingPongBallEvent> getLogsAndDelay() {
+        return () -> new ValueTransformer<PingPongBallEvent, PingPongBallEvent>() {
             @Override
             public void init(ProcessorContext context) {}
 
             @Override
-            public String transform(String value) {
+            public PingPongBallEvent transform(PingPongBallEvent pingPongBallEvent) {
                 log.debug("Ping pong ball received");
-                log.info("Transforming ping pong ball: {}", value);
+                log.info("Transforming ping pong ball: {}", pingPongBallEvent);
                 final int minDelay = appConfig.getMinDelaySeconds();
                 final int maxDelay = appConfig.getMaxDelaySeconds();
 
@@ -135,15 +129,19 @@ public class TopologyProvider {
                     log.error("Sleep interrupted", e);
                 }
 
-                final PingPongBall pingPongBall = deserialize(value);
+                log.info("Returning ping pong ball: {}", pingPongBallEvent);
+                final PingPongTeam currentTeam = PingPongTeam.valueOf(pingPongBallEvent.getPingPongTeam());
+                pingPongBallEvent.setPingPongTeam(returnBall(currentTeam).toString());
 
-                log.info("Returning ping pong ball: {}", pingPongBall);
-                pingPongBall.returnBall();
-                return serialize(pingPongBall);
+                return pingPongBallEvent;
             }
 
             @Override
             public void close() {}
         };
+    }
+
+    private PingPongTeam returnBall(PingPongTeam currentTeam) {
+        return currentTeam.equals(PingPongTeam.REDTEAM) ? PingPongTeam.BLUETEAM : PingPongTeam.REDTEAM;
     }
 }

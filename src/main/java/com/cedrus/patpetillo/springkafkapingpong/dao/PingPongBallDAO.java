@@ -30,9 +30,9 @@ public class PingPongBallDAO {
                 pingPongEvent.getAction().name(),
                 pingPongEvent.getServer(),
                 pingPongEvent.getTimeStamp(),
-                pingPongEvent.getPingPongBall().getId(),
-                pingPongEvent.getPingPongBall().getPingPongTeam().name(),
-                pingPongEvent.getPingPongBall().getColor().name());
+                pingPongEvent.getPingPongBallEvent().getId(),
+                pingPongEvent.getPingPongBallEvent().getPingPongTeam(),
+                pingPongEvent.getPingPongBallEvent().getColor());
     }
 
     public void updatePingPongEvent(PingPongEvent pingPongEvent) {
@@ -41,9 +41,9 @@ public class PingPongBallDAO {
                 pingPongEvent.getAction().name(),
                 pingPongEvent.getServer(),
                 pingPongEvent.getTimeStamp(),
-                pingPongEvent.getPingPongBall().getId(),
-                pingPongEvent.getPingPongBall().getPingPongTeam().name(),
-                pingPongEvent.getPingPongBall().getColor().name());
+                pingPongEvent.getPingPongBallEvent().getId(),
+                pingPongEvent.getPingPongBallEvent().getPingPongTeam(),
+                pingPongEvent.getPingPongBallEvent().getColor());
     }
 
     public List<PingPongEvent> getAllPingPongEvents() {

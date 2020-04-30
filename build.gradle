@@ -7,6 +7,10 @@ plugins {
 	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
 }
 
+ext {
+	restEasyVersion = "4.4.2.Final"
+}
+
 group = 'com.cedrus.patpetillo'
 version = '0.0.3-SNAPSHOT'
 sourceCompatibility = '11'
@@ -15,6 +19,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	all*.exclude module : 'spring-boot-starter-logging'
 }
 
 repositories {
@@ -44,27 +49,26 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
 	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
-	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.4-SNAPSHOT")
+	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.5-ALPHA")
+
 	compile(group: 'org.apache.avro', name: 'avro', version: '1.9.2')
 	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')
-}
+	compile 'io.confluent:kafka-avro-serializer:5.2.1'
 
-bootRun {
-	System.setProperty("spring.profiles.active", "default")
+	implementation group: 'io.apicurio', name: 'apicurio-registry-utils-serde', version: '1.1.1.Final'
+	implementation group: 'org.jboss.resteasy', name: 'resteasy-spring', version: "${restEasyVersion}"
+	implementation group: 'javax.enterprise', name: 'cdi-api', version: '1.2'
+	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 }
 
 apply plugin: 'java'
-tasks.withType(JavaCompile) {
-	options.compilerArgs << '-Xlint:unchecked'
-	options.deprecation = true
-}
-
 apply plugin: 'com.commercehub.gradle.plugin.avro-base'
 task generateAvro(type: GenerateAvroJavaTask) {
 	source('src/main/resources/avro')
 	outputDir = file('src/main/generated')
 }
 
-tasks.withType(JavaCompile) {
-	source(generateAvro)
-}
+// Comment back in to run on build
+//tasks.withType(JavaCompile) {
+//	source(generateAvro)
+//}
