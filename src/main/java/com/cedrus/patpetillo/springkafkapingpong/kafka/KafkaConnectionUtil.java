@@ -4,6 +4,7 @@ import com.cedrus.cloud.streaming.kafka.kafkacommon.KafkaConfigProperties;
 import com.cedrus.cloud.streaming.kafka.kafkacommon.KafkaUtils;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.ServerConfigProperties;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTeam;
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -33,5 +34,11 @@ public class KafkaConnectionUtil {
     return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
         .buildKafkaProperties(
             appConfig.getKafkaApplicationName(), appConfig.getKafkaApplicationIdConfig());
+  }
+
+  public Properties getKafkaProperties(PingPongTeam team) {
+    return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
+        .buildKafkaProperties(
+            appConfig.getKafkaApplicationName() + team.name(), appConfig.getKafkaApplicationIdConfig());
   }
 }

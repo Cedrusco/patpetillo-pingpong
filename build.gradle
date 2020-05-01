@@ -8,7 +8,7 @@ plugins {
 }
 
 ext {
-	restEasyVersion = "4.4.2.Final"
+	restEasyVersion = "4.5.3.Final"
 }
 
 group = 'com.cedrus.patpetillo'
@@ -55,11 +55,13 @@ dependencies {
 	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')
 	compile 'io.confluent:kafka-avro-serializer:5.2.1'
 
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.0'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.11.0'
 	implementation group: 'io.apicurio', name: 'apicurio-registry-utils-serde', version: '1.1.1.Final'
 	implementation group: 'org.jboss.resteasy', name: 'resteasy-spring', version: "${restEasyVersion}"
 	implementation group: 'javax.enterprise', name: 'cdi-api', version: '1.2'
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-	compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version: '3.11.2.Final'
 }
 
 apply plugin: 'java'
