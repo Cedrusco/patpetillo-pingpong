@@ -27,7 +27,8 @@ public class PingPongBallService {
 
       avroSender.send(appConfig.getTopicName(), key, pingPongBallEvent);
     } catch (Exception e) {
-      throw new RuntimeException();
+      log.error("AvroSender exception: {}", e.getMessage());
+      throw new RuntimeException(e);
     }
   }
 }

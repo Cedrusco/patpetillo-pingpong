@@ -19,7 +19,7 @@ kafka:
   kafkaAppId: pingPong
   autoOffsetReset: latest
   bootstrapServers: localhost:9092
-  schemaRegistryUrl: http://registry.amq-streams.apps.openshift.cedruscloud.com # http://localhost:10000
+  schemaRegistryUrl:  http://localhost:10000 # http://registry.amq-streams.apps.openshift.cedruscloud.com
   useMockAvroSchemaRegistryClient: true
   stateStoreDirectoryPath:
   useCustomerStateStoreDirectory: false

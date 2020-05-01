@@ -59,6 +59,7 @@ dependencies {
 	implementation group: 'org.jboss.resteasy', name: 'resteasy-spring', version: "${restEasyVersion}"
 	implementation group: 'javax.enterprise', name: 'cdi-api', version: '1.2'
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+	compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version: '3.11.2.Final'
 }
 
 apply plugin: 'java'
