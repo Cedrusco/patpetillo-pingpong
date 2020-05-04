@@ -1,28 +1,5 @@
 package com.cedrus.patpetillo.springkafkapingpong;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerFourService;
-import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerOneService;
-import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerThreeService;
-import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerTwoService;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
-import org.springframework.boot.CommandLineRunner;
->>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-
-import static org.apache.kafka.common.requests.FetchMetadata.log;
-
-@SpringBootApplication
-public class SpringKafkaPingPongApplication {
-
-<<<<<<< HEAD
-=======
 import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerFourService;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerOneService;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PlayerThreeService;
@@ -48,20 +25,10 @@ public class SpringKafkaPingPongApplication {
 
 	public static final Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");
 
->>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
-=======
-	public static final Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");
-
->>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 	public static void main(String[] args) {
 		SpringApplication.run(SpringKafkaPingPongApplication.class, args);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 	@Bean
 	public CommandLineRunner playerOneRunner(ApplicationContext ctx) {
 		try {
@@ -129,8 +96,4 @@ public class SpringKafkaPingPongApplication {
 			throw rex;
 		}
 	}
-<<<<<<< HEAD
->>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
-=======
->>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 }
