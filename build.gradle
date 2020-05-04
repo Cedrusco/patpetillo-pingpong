@@ -1,21 +1,56 @@
+<<<<<<< HEAD
+=======
+import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
+
+>>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
 plugins {
 	id 'org.springframework.boot' version '2.1.13.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+<<<<<<< HEAD
 }
 
 group = 'com.cedrus.patpetillo'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+=======
+	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
+}
+
+ext {
+	restEasyVersion = "4.5.3.Final"
+}
+
+group = 'com.cedrus.patpetillo'
+version = '0.0.3-SNAPSHOT'
+sourceCompatibility = '11'
+>>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
 
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+<<<<<<< HEAD
+=======
+	all*.exclude module : 'spring-boot-starter-logging'
+>>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
 }
 
 repositories {
 	mavenCentral()
+<<<<<<< HEAD
+=======
+	maven {
+		url = "${artifactory_repoURL}"
+		credentials {
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+		}
+	}
+	maven{
+		url 'https://packages.confluent.io/maven/'
+	}
+>>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
 }
 
 dependencies {
@@ -28,4 +63,36 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+<<<<<<< HEAD
 }
+=======
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
+	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.5-ALPHA")
+
+	compile(group: 'org.apache.avro', name: 'avro', version: '1.9.2')
+	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')
+	compile 'io.confluent:kafka-avro-serializer:5.2.1'
+
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.0'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.11.0'
+	implementation group: 'io.apicurio', name: 'apicurio-registry-utils-serde', version: '1.1.1.Final'
+	implementation group: 'org.jboss.resteasy', name: 'resteasy-spring', version: "${restEasyVersion}"
+	implementation group: 'javax.enterprise', name: 'cdi-api', version: '1.2'
+	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+}
+
+apply plugin: 'java'
+apply plugin: 'com.commercehub.gradle.plugin.avro-base'
+task generateAvro(type: GenerateAvroJavaTask) {
+	source('src/main/resources/avro')
+	outputDir = file('src/main/generated')
+}
+
+// Comment back in to run on build
+//tasks.withType(JavaCompile) {
+//	source(generateAvro)
+//}
+>>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe

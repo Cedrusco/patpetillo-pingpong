@@ -1,0 +1,11 @@
+{
+  "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
+  "type": "record",
+  "name": "PingPongBallEvent",
+  "doc": "Represents a Ping Pong Ball Event",
+  "fields": [
+    {"name":  "id", "type": "string"},
+    {"name":  "pingPongTeam", "type": "string"},
+    {"name":  "color", "type": "string"}
+  ]
+}
