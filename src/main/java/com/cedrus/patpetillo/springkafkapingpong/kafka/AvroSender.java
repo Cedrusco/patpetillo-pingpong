@@ -15,7 +15,12 @@ public class AvroSender {
 
   public void send(String topic, String key, PingPongBallEvent pingPongBallEvent) {
     log.info("sending payload={} with key={} to topic={}", pingPongBallEvent.toString(), key, topic);
-    ProducerRecord<String, PingPongBallEvent> record = new ProducerRecord<>(topic, key, pingPongBallEvent);
-    kafkaTemplate.send(record);
+    try {
+      ProducerRecord<String, PingPongBallEvent> record = new ProducerRecord<>(topic, key, pingPongBallEvent);
+      kafkaTemplate.send(record);
+    } catch (Exception e) {
+      log.info("Error in AvroSender: {}", e.getMessage());
+      throw(e);
+    }
   }
 }

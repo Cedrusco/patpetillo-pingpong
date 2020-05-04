@@ -19,7 +19,7 @@ public class PingPongEventMapper implements RowMapper<PingPongEvent> {
         pingPongEvent.setAction(resultSet.getObject("action", Action.class));
         pingPongEvent.setServer(resultSet.getString("server"));
         pingPongEvent.setTimeStamp(resultSet.getString("time_stamp"));
-        pingPongEvent.pingPongBallEvent.setId(resultSet.getString("ball_id"));
+        pingPongEvent.pingPongBallEvent.setBallId(resultSet.getString("ball_id"));
         pingPongEvent.pingPongBallEvent.setPingPongTeam(resultSet.getString("target"));
         pingPongEvent.pingPongBallEvent.setColor(resultSet.getString("color"));
 

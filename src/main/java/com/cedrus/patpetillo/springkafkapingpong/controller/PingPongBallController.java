@@ -1,6 +1,5 @@
 package com.cedrus.patpetillo.springkafkapingpong.controller;
 
-import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
 import com.cedrus.patpetillo.springkafkapingpong.dao.PingPongBallDAO;
 import com.cedrus.patpetillo.springkafkapingpong.model.*;
 import com.cedrus.patpetillo.springkafkapingpong.stream.PingPongBallService;

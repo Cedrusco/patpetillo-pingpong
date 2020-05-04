@@ -16,13 +16,13 @@ public class PlayerTwoService {
   private final KafkaConnectionUtil kafkaConnectionUtil;
 
   public void startPlayerTwoService() {
-    final PingPongTeam team = PingPongTeam.BLUETEAM;
+    final PingPongTeam pingPongTeam = PingPongTeam.BLUETEAM;
 
-    log.info("Player Two on team: {}", team);
+    log.info("Player Two on team: {}", pingPongTeam);
 
     final KafkaStreams playerTwoStream = new KafkaStreams(
-        topologyProvider.getTopology(PingPongTeam.BLUETEAM, PlayerTwoService.class.getSimpleName()),
-        kafkaConnectionUtil.getKafkaProperties(team));
+        topologyProvider.getTopology(pingPongTeam, PlayerTwoService.class.getSimpleName()),
+        kafkaConnectionUtil.getKafkaProperties(pingPongTeam));
 
     playerTwoStream.start();
 

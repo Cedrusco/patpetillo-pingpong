@@ -6,11 +6,13 @@ import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.config.ServerConfigProperties;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTeam;
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class KafkaConnectionUtil {
 
   private final KafkaConfigProperties kafkaConfigProperties;
@@ -32,13 +34,13 @@ public class KafkaConnectionUtil {
 
   public Properties getKafkaProperties() {
     return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
-        .buildKafkaProperties(
-            appConfig.getKafkaApplicationName(), appConfig.getKafkaApplicationIdConfig());
+        .buildKafkaProperties(appConfig.getKafkaApplicationName(),
+            appConfig.getKafkaApplicationIdConfig());
   }
 
-  public Properties getKafkaProperties(PingPongTeam team) {
+  public Properties getKafkaProperties(PingPongTeam pingPongTeam) {
     return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
-        .buildKafkaProperties(
-            appConfig.getKafkaApplicationName() + team.name(), appConfig.getKafkaApplicationIdConfig());
+        .buildKafkaProperties(appConfig.getKafkaApplicationName() + pingPongTeam.name(),
+            appConfig.getKafkaApplicationIdConfig() + pingPongTeam.name());
   }
 }

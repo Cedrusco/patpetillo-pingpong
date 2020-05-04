@@ -4,21 +4,16 @@ import com.cedrus.cloud.streaming.kafka.kafkacommon.serialization.apicurio.AvroS
 import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.dao.PingPongBallDAO;
-import com.cedrus.patpetillo.springkafkapingpong.kafka.KafkaConnectionUtil;
 import com.cedrus.patpetillo.springkafkapingpong.model.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.apicurio.registry.client.RegistryService;
-import java.io.DataInput;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.ProcessorContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -33,7 +28,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TopologyProvider {
 
     private final AppConfig appConfig;
-    private final ObjectMapper objectMapper;
     private final PingPongBallDAO pingPongBallDAO;
     private final AvroSerdeProvider<PingPongBallEvent> pingPongBallEventAvroSerdeProvider;
     private final RegistryService registryService;
@@ -54,16 +48,15 @@ public class TopologyProvider {
 
         final KStream<String, PingPongBallEvent> pingPongStream = branches[0];
 
-//        KStream<String, PingPongBallEvent> unmodifiedIncomingStream = writeEventToDataStore(pingPongStream, Action.RECEIVING_BALL, server);
+        KStream<String, PingPongBallEvent> unmodifiedIncomingStream = writeEventToDataStore(pingPongStream, Action.RECEIVING_BALL, server);
 
-        final KStream<String, PingPongBallEvent> loggedAndDelayedStream = pingPongStream.transformValues(getLogsAndDelay());
+        final KStream<String, PingPongBallEvent> loggedAndDelayedStream = unmodifiedIncomingStream.transformValues(getLogsAndDelay());
 
         final KStream<String, PingPongBallEvent> randomUUIDStream = getRandomUUID(loggedAndDelayedStream);
 
-//        KStream<String, PingPongBallEvent> unmodifiedOutGoingString = writeEventToDataStore(randomUUIDStream, Action.VOLLEYING_BALL, server);
+        KStream<String, PingPongBallEvent> unmodifiedOutGoingString = writeEventToDataStore(randomUUIDStream, Action.VOLLEYING_BALL, server);
 
-
-        randomUUIDStream.to(appConfig.getTopicName(), Produced.with(Serdes.String(), pingPongBallEventSerde));
+        unmodifiedOutGoingString.to(appConfig.getTopicName(), Produced.with(Serdes.String(), pingPongBallEventSerde));
 
         return builder.build();
     }
@@ -96,33 +89,7 @@ public class TopologyProvider {
     }
 
     private Predicate<String, PingPongBallEvent> getTargetFilterPredicate(PingPongTeam pingPongTeam) {
-        log.info("Predicate pingPongTeam: {}", pingPongTeam);
-        log.debug("Predicate pingPongTeam: {}", pingPongTeam);
-        log.warn("Predicate pingPongTeam: {}", pingPongTeam);
-        return (key, value) -> {
-            log.info("Predicate value: {}", value);
-            log.warn("Predicate value: {}", value);
-            log.debug("Predicate value: {}", value);
-            return value.getPingPongTeam().equals(pingPongTeam.toString());
-        };
-    }
-
-    private PingPongBall deserialize(String pingPongBallString) {
-        try {
-            return objectMapper.readValue(pingPongBallString, PingPongBall.class);
-        } catch (Exception e) {
-            log.debug("Deserialize Ping Pong ball error: {}", pingPongBallString);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String serialize(PingPongBall pingPongBall) {
-        try {
-            return objectMapper.writeValueAsString(pingPongBall);
-        } catch (Exception e) {
-            log.debug("Serialize Ping Pong ball error: {}", pingPongBall);
-            throw new RuntimeException(e);
-        }
+        return (key, value) -> value.getPingPongTeam().equals(pingPongTeam.name());
     }
 
     private ValueTransformerSupplier<PingPongBallEvent, PingPongBallEvent> getLogsAndDelay() {
@@ -147,6 +114,7 @@ public class TopologyProvider {
                 }
 
                 final PingPongTeam currentTeam = PingPongTeam.valueOf(pingPongBallEvent.getPingPongTeam());
+
                 pingPongBallEvent.setPingPongTeam(returnBall(currentTeam).toString());
 
                 log.info("Returning ping pong ball: {}", pingPongBallEvent);

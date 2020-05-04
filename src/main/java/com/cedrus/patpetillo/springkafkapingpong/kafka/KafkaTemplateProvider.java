@@ -2,6 +2,7 @@ package com.cedrus.patpetillo.springkafkapingpong.kafka;
 
 import com.cedrus.cloud.streaming.kafka.kafkacommon.serialization.apicurio.AvroSerdeProvider;
 import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
+import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTeam;
 import io.apicurio.registry.client.RegistryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.StringSerializer;
