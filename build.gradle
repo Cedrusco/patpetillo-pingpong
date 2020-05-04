@@ -64,6 +64,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
@@ -96,3 +97,13 @@ task generateAvro(type: GenerateAvroJavaTask) {
 //	source(generateAvro)
 //}
 >>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
+=======
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
+}
+
+bootRun {
+	System.setProperty("spring.profiles.active", "default")
+}
+>>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee

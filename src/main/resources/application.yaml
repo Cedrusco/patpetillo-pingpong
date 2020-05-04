@@ -3,11 +3,12 @@ app:
   minDelaySeconds: 3
   maxDelaySeconds: 10
   topic:
-    topicName: pingpong
+    topicName: pingpongpatfourplayer
 kafka:
   bootstrapServers: localhost:9092
-  kafkaAppId: ping-pong
+  kafkaAppId: pingPong
   autoOffsetReset: latest
+<<<<<<< HEAD
 =======
 server:
   port: 3015
@@ -35,9 +36,15 @@ kafka:
   saslMechanism:
   saslJaasUserName:
   enableSslEndpointAuthentication:
+=======
+>>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 datasource:
     driverClassName: org.postgresql.Driver
     jdbcUrl: jdbc:postgresql://127.0.0.1:5432/postgres
     username: postgres
+<<<<<<< HEAD
 >>>>>>> b5d784298fa0736c5821cf4e4f4328cbf8b371fe
+=======
+    password: postgres
+>>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 logging.level.com.cedrus: DEBUG

@@ -13,7 +13,10 @@ public class AppConfig {
 
     private Integer minDelaySeconds;
     private Integer maxDelaySeconds;
+<<<<<<< HEAD
     private String topicName;
     private String kafkaApplicationIdConfig;
     private String kafkaApplicationName;
+=======
+>>>>>>> 1ae2a5539a4a010828fb4e5cb9695eb7d419e5ee
 }
