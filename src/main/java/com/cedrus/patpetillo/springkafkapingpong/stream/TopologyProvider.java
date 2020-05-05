@@ -33,9 +33,6 @@ public class TopologyProvider {
     private final RegistryService registryService;
 
     public Topology getTopology(PingPongTeam pingPongTeam, String server) {
-        log.info("Server: {}", server);
-        log.info("PingPongTeam: {}", pingPongTeam);
-
         final StreamsBuilder builder = new StreamsBuilder();
         final Serde<PingPongBallEvent> pingPongBallEventSerde = pingPongBallEventAvroSerdeProvider.getSerde(registryService, false);
 
@@ -68,9 +65,7 @@ public class TopologyProvider {
 
         return stream.peek(((key, value) -> {
             PingPongEvent pingPongEvent = new PingPongEvent();
-            final UUID uuid = UUID.randomUUID();
 
-            pingPongEvent.setId(uuid);
             pingPongEvent.setKey(key);
             pingPongEvent.setAction(action);
             pingPongEvent.setServer(server);

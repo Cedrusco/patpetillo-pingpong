@@ -11,7 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PingPongEvent {
-    UUID id;
     String key;
     Action action;
     String server;
