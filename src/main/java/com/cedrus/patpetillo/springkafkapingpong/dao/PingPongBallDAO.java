@@ -54,8 +54,8 @@ public class PingPongBallDAO {
         .queryForObject(SQL_FIND_PING_PONG_EVENT, new Object[]{id}, pingPongEventMapper);
   }
 
-  public int deletePingPongEvent(PingPongEvent pingPongEvent) {
-    return jdbcTemplate.update(SQL_DELETE_PING_PONG_EVENT, pingPongEvent.getId());
+  public int deletePingPongEvent(PingPongEvent pingPongEvent, String id) {
+    return jdbcTemplate.update(SQL_DELETE_PING_PONG_EVENT, id);
   }
 
 }
