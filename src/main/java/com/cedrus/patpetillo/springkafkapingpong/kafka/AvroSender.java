@@ -15,7 +15,7 @@ public class AvroSender {
   private KafkaTemplate<String, PingPongBallEvent> kafkaTemplate;
 
   public void send(String topic, String key, PingPongBallEvent pingPongBallEvent) {
-    log.info("sending payload={} with key={} to topic={}", pingPongBallEvent.toString(), key,
+    log.info("Sending Payload: {} with Key: {} to Topic: {}", pingPongBallEvent.toString(), key,
         topic);
     ProducerRecord<String, PingPongBallEvent> record = new ProducerRecord<>(topic, key,
         pingPongBallEvent);
