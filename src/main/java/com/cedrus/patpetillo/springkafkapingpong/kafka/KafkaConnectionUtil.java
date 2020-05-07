@@ -32,17 +32,10 @@ public class KafkaConnectionUtil {
     this.environment = environment;
   }
 
-  public Properties getKafkaProperties() {
-    log.info("Get Kafka Properties called without PingPongTeam");
-    return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
-        .buildKafkaProperties(appConfig.getKafkaApplicationName(),
-            appConfig.getKafkaApplicationIdConfig());
-  }
-
   public Properties getKafkaProperties(PingPongTeam pingPongTeam) {
     log.info("Get Kafka Properties called with PingPongTeam: {}", pingPongTeam);
     return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
-        .buildKafkaProperties(appConfig.getKafkaApplicationName(),
-            appConfig.getKafkaApplicationIdConfig() + pingPongTeam.name());
+        .buildKafkaProperties(appConfig.getKafkaApplicationName() + pingPongTeam.name(),
+            appConfig.getKafkaApplicationName() + pingPongTeam.name());
   }
 }

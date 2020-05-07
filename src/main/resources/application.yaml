@@ -1,9 +1,9 @@
 server:
   port: 3015
 app:
-  kafkaApplicationIdConfig: pingpongpatfourplayer-app-id
-  kafkaApplicationName: pingpongpatfourplayer
-  topicName: pingpongpatfourplayer
+  kafkaApplicationIdConfig: pingpongfourplayer-app-id
+  kafkaApplicationName: pingpongfourplayer
+  topicName: pingpongfourplayer
   minDelaySeconds: 3
   maxDelaySeconds: 10
 kafka:
@@ -11,7 +11,7 @@ kafka:
   autoOffsetReset: latest
   bootstrapServers: localhost:9092
   schemaRegistryUrl: http://localhost:10000 #http://registry.amq-streams.apps.openshift.cedruscloud.com
-  useMockAvroSchemaRegistryClient: true
+  useMockAvroSchemaRegistryClient: false
   stateStoreDirectoryPath:
   useCustomerStateStoreDirectory: false
   autoOffsetResetConfig: earliest

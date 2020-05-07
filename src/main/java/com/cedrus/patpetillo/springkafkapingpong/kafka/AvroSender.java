@@ -1,6 +1,6 @@
 package com.cedrus.patpetillo.springkafkapingpong.kafka;
 
-import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent;
+import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class AvroSender {
 
-  private final KafkaTemplate<String, PingPongEvent> kafkaTemplate;
+  private final KafkaTemplate<String, PingPongBallEvent> kafkaTemplate;
 
-  public void send(String topic, String key, PingPongEvent PingPongEvent) {
-    log.info("Sending Payload: {} with Key: {} to Topic: {}", PingPongEvent.toString(), key,
+  public void send(String topic, String key, PingPongBallEvent pingPongBallEvent) {
+    log.info("Sending Payload: {} with Key: {} to Topic: {}", pingPongBallEvent, key,
         topic);
 
-    final ProducerRecord<String, PingPongEvent> record = new ProducerRecord<>(topic, key,
-        PingPongEvent);
+    final ProducerRecord<String, PingPongBallEvent> record = new ProducerRecord<>(topic, key,
+        pingPongBallEvent);
 
     kafkaTemplate.send(record);
   }

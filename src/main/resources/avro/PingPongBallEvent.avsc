@@ -1,7 +1,7 @@
 {
   "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
   "type": "record",
-  "name": "PingPongEvent",
+  "name": "PingPongBallEvent",
   "doc": "Represents a Ping Pong Ball Event",
   "fields": [
     {
@@ -9,12 +9,12 @@
       "type": "int"
     },
     {
-      "name": "teamWithBallCurrently",
+      "name": "currentTeamWithBall",
       "type": "TeamType",
       "doc": "Represents the team currently with the Ping Pong ball"
     },
     {
-      "name": "teamReceivingVolley",
+      "name": "teamReceivingBall",
       "type": "TeamType",
       "doc": "Represents the team receiving the Ping Pong ball"
     },

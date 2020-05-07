@@ -10,15 +10,15 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 /** Represents a Ping Pong Ball Event */
 @org.apache.avro.specific.AvroGenerated
-public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1042645669747290796L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PingPongEvent\",\"namespace\":\"com.cedrus.patpetillo.springkafkapingpong.avro\",\"doc\":\"Represents a Ping Pong Ball Event\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"teamWithBallCurrently\",\"type\":{\"type\":\"enum\",\"name\":\"TeamType\",\"doc\":\"Represents the teams playing Ping Pong\",\"symbols\":[\"BLUE_TEAM\",\"RED_TEAM\"]},\"doc\":\"Represents the team currently with the Ping Pong ball\"},{\"name\":\"teamReceivingVolley\",\"type\":\"TeamType\",\"doc\":\"Represents the team receiving the Ping Pong ball\"},{\"name\":\"server\",\"type\":{\"type\":\"enum\",\"name\":\"ServerType\",\"doc\":\"Represents who is serving the Ping Pong ball\",\"symbols\":[\"PLAYER_ONE_SERVICE\",\"PLAYER_TWO_SERVICE\",\"PLAYER_THREE_SERVICE\",\"PLAYER_FOUR_SERVICE\"]},\"doc\":\"Represents who is serving the Ping Pong ball\"},{\"name\":\"color\",\"type\":{\"type\":\"enum\",\"name\":\"ColorType\",\"doc\":\"Represents the possible color of a Ping Pong ball\",\"symbols\":[\"BLACK\",\"RED\",\"BLUE\",\"PURPLE\",\"ORANGE\"]},\"doc\":\"Represents the possible color of a Ping Pong ball\"}]}");
+public class PingPongBallEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -2936841425358619206L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PingPongBallEvent\",\"namespace\":\"com.cedrus.patpetillo.springkafkapingpong.avro\",\"doc\":\"Represents a Ping Pong Ball Event\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"currentTeamWithBall\",\"type\":{\"type\":\"enum\",\"name\":\"TeamType\",\"doc\":\"Represents the teams playing Ping Pong\",\"symbols\":[\"BLUE_TEAM\",\"RED_TEAM\"]},\"doc\":\"Represents the team currently with the Ping Pong ball\"},{\"name\":\"teamReceivingBall\",\"type\":\"TeamType\",\"doc\":\"Represents the team receiving the Ping Pong ball\"},{\"name\":\"server\",\"type\":{\"type\":\"enum\",\"name\":\"ServerType\",\"doc\":\"Represents who is serving the Ping Pong ball\",\"symbols\":[\"PLAYER_ONE_SERVICE\",\"PLAYER_TWO_SERVICE\",\"PLAYER_THREE_SERVICE\",\"PLAYER_FOUR_SERVICE\"]},\"doc\":\"Represents who is serving the Ping Pong ball\"},{\"name\":\"color\",\"type\":{\"type\":\"enum\",\"name\":\"ColorType\",\"doc\":\"Represents the possible color of a Ping Pong ball\",\"symbols\":[\"BLACK\",\"RED\",\"BLUE\",\"PURPLE\",\"ORANGE\"]},\"doc\":\"Represents the possible color of a Ping Pong ball\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public int id;
   /** Represents the team currently with the Ping Pong ball */
-  @Deprecated public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamWithBallCurrently;
+  @Deprecated public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType currentTeamWithBall;
   /** Represents the team receiving the Ping Pong ball */
-  @Deprecated public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingVolley;
+  @Deprecated public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingBall;
   /** Represents who is serving the Ping Pong ball */
   @Deprecated public com.cedrus.patpetillo.springkafkapingpong.avro.ServerType server;
   /** Represents the possible color of a Ping Pong ball */
@@ -29,20 +29,20 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public PingPongEvent() {}
+  public PingPongBallEvent() {}
 
   /**
    * All-args constructor.
    * @param id The new value for id
-   * @param teamWithBallCurrently Represents the team currently with the Ping Pong ball
-   * @param teamReceivingVolley Represents the team receiving the Ping Pong ball
+   * @param currentTeamWithBall Represents the team currently with the Ping Pong ball
+   * @param teamReceivingBall Represents the team receiving the Ping Pong ball
    * @param server Represents who is serving the Ping Pong ball
    * @param color Represents the possible color of a Ping Pong ball
    */
-  public PingPongEvent(java.lang.Integer id, com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamWithBallCurrently, com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingVolley, com.cedrus.patpetillo.springkafkapingpong.avro.ServerType server, com.cedrus.patpetillo.springkafkapingpong.avro.ColorType color) {
+  public PingPongBallEvent(java.lang.Integer id, com.cedrus.patpetillo.springkafkapingpong.avro.TeamType currentTeamWithBall, com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingBall, com.cedrus.patpetillo.springkafkapingpong.avro.ServerType server, com.cedrus.patpetillo.springkafkapingpong.avro.ColorType color) {
     this.id = id;
-    this.teamWithBallCurrently = teamWithBallCurrently;
-    this.teamReceivingVolley = teamReceivingVolley;
+    this.currentTeamWithBall = currentTeamWithBall;
+    this.teamReceivingBall = teamReceivingBall;
     this.server = server;
     this.color = color;
   }
@@ -52,8 +52,8 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
-    case 1: return teamWithBallCurrently;
-    case 2: return teamReceivingVolley;
+    case 1: return currentTeamWithBall;
+    case 2: return teamReceivingBall;
     case 3: return server;
     case 4: return color;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -65,8 +65,8 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.lang.Integer)value$; break;
-    case 1: teamWithBallCurrently = (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType)value$; break;
-    case 2: teamReceivingVolley = (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType)value$; break;
+    case 1: currentTeamWithBall = (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType)value$; break;
+    case 2: teamReceivingBall = (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType)value$; break;
     case 3: server = (com.cedrus.patpetillo.springkafkapingpong.avro.ServerType)value$; break;
     case 4: color = (com.cedrus.patpetillo.springkafkapingpong.avro.ColorType)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -90,37 +90,37 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
   }
 
   /**
-   * Gets the value of the 'teamWithBallCurrently' field.
+   * Gets the value of the 'currentTeamWithBall' field.
    * @return Represents the team currently with the Ping Pong ball
    */
-  public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamWithBallCurrently() {
-    return teamWithBallCurrently;
+  public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getCurrentTeamWithBall() {
+    return currentTeamWithBall;
   }
 
   /**
-   * Sets the value of the 'teamWithBallCurrently' field.
+   * Sets the value of the 'currentTeamWithBall' field.
    * Represents the team currently with the Ping Pong ball
    * @param value the value to set.
    */
-  public void setTeamWithBallCurrently(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
-    this.teamWithBallCurrently = value;
+  public void setCurrentTeamWithBall(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
+    this.currentTeamWithBall = value;
   }
 
   /**
-   * Gets the value of the 'teamReceivingVolley' field.
+   * Gets the value of the 'teamReceivingBall' field.
    * @return Represents the team receiving the Ping Pong ball
    */
-  public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamReceivingVolley() {
-    return teamReceivingVolley;
+  public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamReceivingBall() {
+    return teamReceivingBall;
   }
 
   /**
-   * Sets the value of the 'teamReceivingVolley' field.
+   * Sets the value of the 'teamReceivingBall' field.
    * Represents the team receiving the Ping Pong ball
    * @param value the value to set.
    */
-  public void setTeamReceivingVolley(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
-    this.teamReceivingVolley = value;
+  public void setTeamReceivingBall(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
+    this.teamReceivingBall = value;
   }
 
   /**
@@ -158,42 +158,42 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
   }
 
   /**
-   * Creates a new PingPongEvent RecordBuilder.
-   * @return A new PingPongEvent RecordBuilder
+   * Creates a new PingPongBallEvent RecordBuilder.
+   * @return A new PingPongBallEvent RecordBuilder
    */
-  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder newBuilder() {
-    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder();
+  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder newBuilder() {
+    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder();
   }
 
   /**
-   * Creates a new PingPongEvent RecordBuilder by copying an existing Builder.
+   * Creates a new PingPongBallEvent RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new PingPongEvent RecordBuilder
+   * @return A new PingPongBallEvent RecordBuilder
    */
-  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder newBuilder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder other) {
-    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder(other);
+  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder newBuilder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder other) {
+    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder(other);
   }
 
   /**
-   * Creates a new PingPongEvent RecordBuilder by copying an existing PingPongEvent instance.
+   * Creates a new PingPongBallEvent RecordBuilder by copying an existing PingPongBallEvent instance.
    * @param other The existing instance to copy.
-   * @return A new PingPongEvent RecordBuilder
+   * @return A new PingPongBallEvent RecordBuilder
    */
-  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder newBuilder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent other) {
-    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder(other);
+  public static com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder newBuilder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent other) {
+    return new com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder(other);
   }
 
   /**
-   * RecordBuilder for PingPongEvent instances.
+   * RecordBuilder for PingPongBallEvent instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PingPongEvent>
-    implements org.apache.avro.data.RecordBuilder<PingPongEvent> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PingPongBallEvent>
+    implements org.apache.avro.data.RecordBuilder<PingPongBallEvent> {
 
     private int id;
     /** Represents the team currently with the Ping Pong ball */
-    private com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamWithBallCurrently;
+    private com.cedrus.patpetillo.springkafkapingpong.avro.TeamType currentTeamWithBall;
     /** Represents the team receiving the Ping Pong ball */
-    private com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingVolley;
+    private com.cedrus.patpetillo.springkafkapingpong.avro.TeamType teamReceivingBall;
     /** Represents who is serving the Ping Pong ball */
     private com.cedrus.patpetillo.springkafkapingpong.avro.ServerType server;
     /** Represents the possible color of a Ping Pong ball */
@@ -208,18 +208,18 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder other) {
+    private Builder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.teamWithBallCurrently)) {
-        this.teamWithBallCurrently = data().deepCopy(fields()[1].schema(), other.teamWithBallCurrently);
+      if (isValidValue(fields()[1], other.currentTeamWithBall)) {
+        this.currentTeamWithBall = data().deepCopy(fields()[1].schema(), other.currentTeamWithBall);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.teamReceivingVolley)) {
-        this.teamReceivingVolley = data().deepCopy(fields()[2].schema(), other.teamReceivingVolley);
+      if (isValidValue(fields()[2], other.teamReceivingBall)) {
+        this.teamReceivingBall = data().deepCopy(fields()[2].schema(), other.teamReceivingBall);
         fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.server)) {
@@ -233,21 +233,21 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
     }
 
     /**
-     * Creates a Builder by copying an existing PingPongEvent instance
+     * Creates a Builder by copying an existing PingPongBallEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent other) {
+    private Builder(com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.teamWithBallCurrently)) {
-        this.teamWithBallCurrently = data().deepCopy(fields()[1].schema(), other.teamWithBallCurrently);
+      if (isValidValue(fields()[1], other.currentTeamWithBall)) {
+        this.currentTeamWithBall = data().deepCopy(fields()[1].schema(), other.currentTeamWithBall);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.teamReceivingVolley)) {
-        this.teamReceivingVolley = data().deepCopy(fields()[2].schema(), other.teamReceivingVolley);
+      if (isValidValue(fields()[2], other.teamReceivingBall)) {
+        this.teamReceivingBall = data().deepCopy(fields()[2].schema(), other.teamReceivingBall);
         fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.server)) {
@@ -273,7 +273,7 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * @param value The value of 'id'.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder setId(int value) {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder setId(int value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -293,93 +293,93 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * Clears the value of the 'id' field.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder clearId() {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder clearId() {
       fieldSetFlags()[0] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'teamWithBallCurrently' field.
+      * Gets the value of the 'currentTeamWithBall' field.
       * Represents the team currently with the Ping Pong ball
       * @return The value.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamWithBallCurrently() {
-      return teamWithBallCurrently;
+    public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getCurrentTeamWithBall() {
+      return currentTeamWithBall;
     }
 
     /**
-      * Sets the value of the 'teamWithBallCurrently' field.
+      * Sets the value of the 'currentTeamWithBall' field.
       * Represents the team currently with the Ping Pong ball
-      * @param value The value of 'teamWithBallCurrently'.
+      * @param value The value of 'currentTeamWithBall'.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder setTeamWithBallCurrently(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder setCurrentTeamWithBall(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
       validate(fields()[1], value);
-      this.teamWithBallCurrently = value;
+      this.currentTeamWithBall = value;
       fieldSetFlags()[1] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'teamWithBallCurrently' field has been set.
+      * Checks whether the 'currentTeamWithBall' field has been set.
       * Represents the team currently with the Ping Pong ball
-      * @return True if the 'teamWithBallCurrently' field has been set, false otherwise.
+      * @return True if the 'currentTeamWithBall' field has been set, false otherwise.
       */
-    public boolean hasTeamWithBallCurrently() {
+    public boolean hasCurrentTeamWithBall() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-      * Clears the value of the 'teamWithBallCurrently' field.
+      * Clears the value of the 'currentTeamWithBall' field.
       * Represents the team currently with the Ping Pong ball
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder clearTeamWithBallCurrently() {
-      teamWithBallCurrently = null;
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder clearCurrentTeamWithBall() {
+      currentTeamWithBall = null;
       fieldSetFlags()[1] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'teamReceivingVolley' field.
+      * Gets the value of the 'teamReceivingBall' field.
       * Represents the team receiving the Ping Pong ball
       * @return The value.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamReceivingVolley() {
-      return teamReceivingVolley;
+    public com.cedrus.patpetillo.springkafkapingpong.avro.TeamType getTeamReceivingBall() {
+      return teamReceivingBall;
     }
 
     /**
-      * Sets the value of the 'teamReceivingVolley' field.
+      * Sets the value of the 'teamReceivingBall' field.
       * Represents the team receiving the Ping Pong ball
-      * @param value The value of 'teamReceivingVolley'.
+      * @param value The value of 'teamReceivingBall'.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder setTeamReceivingVolley(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder setTeamReceivingBall(com.cedrus.patpetillo.springkafkapingpong.avro.TeamType value) {
       validate(fields()[2], value);
-      this.teamReceivingVolley = value;
+      this.teamReceivingBall = value;
       fieldSetFlags()[2] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'teamReceivingVolley' field has been set.
+      * Checks whether the 'teamReceivingBall' field has been set.
       * Represents the team receiving the Ping Pong ball
-      * @return True if the 'teamReceivingVolley' field has been set, false otherwise.
+      * @return True if the 'teamReceivingBall' field has been set, false otherwise.
       */
-    public boolean hasTeamReceivingVolley() {
+    public boolean hasTeamReceivingBall() {
       return fieldSetFlags()[2];
     }
 
 
     /**
-      * Clears the value of the 'teamReceivingVolley' field.
+      * Clears the value of the 'teamReceivingBall' field.
       * Represents the team receiving the Ping Pong ball
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder clearTeamReceivingVolley() {
-      teamReceivingVolley = null;
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder clearTeamReceivingBall() {
+      teamReceivingBall = null;
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -399,7 +399,7 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * @param value The value of 'server'.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder setServer(com.cedrus.patpetillo.springkafkapingpong.avro.ServerType value) {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder setServer(com.cedrus.patpetillo.springkafkapingpong.avro.ServerType value) {
       validate(fields()[3], value);
       this.server = value;
       fieldSetFlags()[3] = true;
@@ -421,7 +421,7 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * Represents who is serving the Ping Pong ball
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder clearServer() {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder clearServer() {
       server = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -442,7 +442,7 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * @param value The value of 'color'.
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder setColor(com.cedrus.patpetillo.springkafkapingpong.avro.ColorType value) {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder setColor(com.cedrus.patpetillo.springkafkapingpong.avro.ColorType value) {
       validate(fields()[4], value);
       this.color = value;
       fieldSetFlags()[4] = true;
@@ -464,19 +464,19 @@ public class PingPongEvent extends org.apache.avro.specific.SpecificRecordBase i
       * Represents the possible color of a Ping Pong ball
       * @return This builder.
       */
-    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent.Builder clearColor() {
+    public com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent.Builder clearColor() {
       color = null;
       fieldSetFlags()[4] = false;
       return this;
     }
 
     @Override
-    public PingPongEvent build() {
+    public PingPongBallEvent build() {
       try {
-        PingPongEvent record = new PingPongEvent();
+        PingPongBallEvent record = new PingPongBallEvent();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.Integer) defaultValue(fields()[0]);
-        record.teamWithBallCurrently = fieldSetFlags()[1] ? this.teamWithBallCurrently : (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType) defaultValue(fields()[1]);
-        record.teamReceivingVolley = fieldSetFlags()[2] ? this.teamReceivingVolley : (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType) defaultValue(fields()[2]);
+        record.currentTeamWithBall = fieldSetFlags()[1] ? this.currentTeamWithBall : (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType) defaultValue(fields()[1]);
+        record.teamReceivingBall = fieldSetFlags()[2] ? this.teamReceivingBall : (com.cedrus.patpetillo.springkafkapingpong.avro.TeamType) defaultValue(fields()[2]);
         record.server = fieldSetFlags()[3] ? this.server : (com.cedrus.patpetillo.springkafkapingpong.avro.ServerType) defaultValue(fields()[3]);
         record.color = fieldSetFlags()[4] ? this.color : (com.cedrus.patpetillo.springkafkapingpong.avro.ColorType) defaultValue(fields()[4]);
         return record;

@@ -1,6 +1,5 @@
 package com.cedrus.patpetillo.springkafkapingpong.postgres;
 
-import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent;
 import com.cedrus.patpetillo.springkafkapingpong.model.Action;
 import com.cedrus.patpetillo.springkafkapingpong.model.Server;
 import javax.persistence.Entity;
