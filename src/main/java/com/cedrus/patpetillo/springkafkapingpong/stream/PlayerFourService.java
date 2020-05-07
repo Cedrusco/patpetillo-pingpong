@@ -21,7 +21,7 @@ public class PlayerFourService {
 
     log.info("Player Four on team: {}", pingPongTeam);
 
-    KafkaStreams playerFourStream = new KafkaStreams(topologyProvider
+    final KafkaStreams playerFourStream = new KafkaStreams(topologyProvider
         .getTopology(pingPongTeam, Server.PLAYER_FOUR_SERVICE),
         kafkaConnectionUtil.getKafkaProperties(pingPongTeam));
 
