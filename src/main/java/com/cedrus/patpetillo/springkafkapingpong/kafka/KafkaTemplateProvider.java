@@ -1,7 +1,7 @@
 package com.cedrus.patpetillo.springkafkapingpong.kafka;
 
 import com.cedrus.cloud.streaming.kafka.kafkacommon.serialization.apicurio.AvroSerdeProvider;
-import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
+import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent;
 import io.apicurio.registry.client.RegistryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -14,28 +14,29 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Slf4j
 @Configuration
 public class KafkaTemplateProvider {
+
   private final KafkaConnectionUtil kafkaConnectionUtil;
   private final RegistryService registryService;
-  private final AvroSerdeProvider<PingPongBallEvent> pingPongBallEventAvroSerdeProvider;
+  private final AvroSerdeProvider<PingPongEvent> PingPongEventAvroSerdeProvider;
 
   @Autowired
   public KafkaTemplateProvider(
       KafkaConnectionUtil kafkaConnectionUtil,
       RegistryService registryService,
-      AvroSerdeProvider<PingPongBallEvent> pingPongBallEventAvroSerdeProvider) {
+      AvroSerdeProvider<PingPongEvent> PingPongEventAvroSerdeProvider) {
     this.kafkaConnectionUtil = kafkaConnectionUtil;
     this.registryService = registryService;
-    this.pingPongBallEventAvroSerdeProvider = pingPongBallEventAvroSerdeProvider;
+    this.PingPongEventAvroSerdeProvider = PingPongEventAvroSerdeProvider;
   }
 
   @Bean
-  public KafkaTemplate<String, PingPongBallEvent> createKafkaTemplate() {
+  public KafkaTemplate<String, PingPongEvent> createKafkaTemplate() {
 
-    DefaultKafkaProducerFactory<String, PingPongBallEvent> defaultKafkaProducerFactory =
+    DefaultKafkaProducerFactory<String, PingPongEvent> defaultKafkaProducerFactory =
         new DefaultKafkaProducerFactory(
             kafkaConnectionUtil.getKafkaProperties(),
             new StringSerializer(),
-            pingPongBallEventAvroSerdeProvider.getSerde(registryService, false).serializer());
+            PingPongEventAvroSerdeProvider.getSerde(registryService, false).serializer());
     return new KafkaTemplate<>(defaultKafkaProducerFactory);
   }
 }

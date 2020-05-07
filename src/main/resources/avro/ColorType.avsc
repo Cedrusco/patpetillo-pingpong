@@ -1,0 +1,13 @@
+{
+  "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
+  "name": "ColorType",
+  "type": "enum",
+  "doc": "Represents the possible color of a Ping Pong ball",
+  "symbols": [
+    "BLACK",
+    "RED",
+    "BLUE",
+    "PURPLE",
+    "ORANGE"
+  ]
+}

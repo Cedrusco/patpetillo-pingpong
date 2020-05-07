@@ -1,6 +1,9 @@
 package com.cedrus.patpetillo.springkafkapingpong.stream;
 
-import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongBallEvent;
+import com.cedrus.patpetillo.springkafkapingpong.avro.ColorType;
+import com.cedrus.patpetillo.springkafkapingpong.avro.PingPongEvent;
+import com.cedrus.patpetillo.springkafkapingpong.avro.ServerType;
+import com.cedrus.patpetillo.springkafkapingpong.avro.TeamType;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.kafka.AvroSender;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
@@ -22,10 +25,14 @@ public class PingPongBallService {
     try {
       final UUID uuid = UUID.randomUUID();
       final String key = uuid.toString();
-      final PingPongBallEvent pingPongBallEvent = new PingPongBallEvent(pingPongBall.getId(),
-          pingPongBall.getPingPongTeam().name(), pingPongBall.getColor().name());
 
-      avroSender.send(appConfig.getTopicName(), key, pingPongBallEvent);
+      final PingPongEvent PingPongEvent = new PingPongEvent(pingPongBall.getId(),
+          TeamType.valueOf(pingPongBall.getCurrentTeamWithBall().name()),
+          TeamType.valueOf(pingPongBall.getReceivingTeamForBall().name()),
+          ServerType.valueOf(pingPongBall.getServer().name()),
+          ColorType.valueOf(pingPongBall.getColor().name()));
+
+      avroSender.send(appConfig.getTopicName(), key, PingPongEvent);
     } catch (Exception e) {
       log.error("AvroSender exception: {}", e.getMessage());
       throw new RuntimeException(e);

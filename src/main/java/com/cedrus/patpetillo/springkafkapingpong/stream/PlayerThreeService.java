@@ -2,6 +2,7 @@ package com.cedrus.patpetillo.springkafkapingpong.stream;
 
 import com.cedrus.patpetillo.springkafkapingpong.kafka.KafkaConnectionUtil;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongTeam;
+import com.cedrus.patpetillo.springkafkapingpong.model.Server;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
@@ -16,12 +17,12 @@ public class PlayerThreeService {
   private final KafkaConnectionUtil kafkaConnectionUtil;
 
   public void startPlayerThreeService() {
-    final PingPongTeam pingPongTeam = PingPongTeam.REDTEAM;
+    final PingPongTeam pingPongTeam = PingPongTeam.RED_TEAM;
 
     log.info("Player Three on team: {}", pingPongTeam);
 
     KafkaStreams playerThreeStream = new KafkaStreams(topologyProvider
-        .getTopology(pingPongTeam, PlayerThreeService.class.getSimpleName()),
+        .getTopology(pingPongTeam, Server.PLAYER_THREE_SERVICE),
         kafkaConnectionUtil.getKafkaProperties(pingPongTeam));
 
     playerThreeStream.start();

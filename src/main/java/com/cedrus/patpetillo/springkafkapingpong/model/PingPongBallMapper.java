@@ -10,9 +10,12 @@ import java.sql.SQLException;
 public class PingPongBallMapper implements RowMapper<PingPongBall> {
 
     public PingPongBall mapRow(ResultSet resultSet, int i) throws SQLException {
-        PingPongBall pingPongBall = new PingPongBall();
-        pingPongBall.setId(resultSet.getString("id"));
-        pingPongBall.setPingPongTeam(PingPongTeam.valueOf(resultSet.getString("target")));
+        final PingPongBall pingPongBall = new PingPongBall();
+
+        pingPongBall.setId(resultSet.getInt("id"));
+        pingPongBall.setCurrentTeamWithBall(PingPongTeam.valueOf(resultSet.getString("current_team")));
+        pingPongBall.setReceivingTeamForBall(PingPongTeam.valueOf(resultSet.getString("target_team")));
+        pingPongBall.setServer((Server.valueOf(resultSet.getString("server"))));
         pingPongBall.setColor((Color.valueOf(resultSet.getString("color"))));
 
         return pingPongBall;

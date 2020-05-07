@@ -1,0 +1,12 @@
+{
+  "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
+  "name": "ServerType",
+  "type": "enum",
+  "doc": "Represents who is serving the Ping Pong ball",
+  "symbols": [
+    "PLAYER_ONE_SERVICE",
+    "PLAYER_TWO_SERVICE",
+    "PLAYER_THREE_SERVICE",
+    "PLAYER_FOUR_SERVICE"
+  ]
+}

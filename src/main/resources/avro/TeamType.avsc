@@ -1,0 +1,10 @@
+{
+  "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
+  "name": "TeamType",
+  "type": "enum",
+  "doc": "Represents the teams playing Ping Pong",
+  "symbols": [
+    "BLUE_TEAM",
+    "RED_TEAM"
+  ]
+}
