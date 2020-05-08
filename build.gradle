@@ -54,7 +54,7 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
 	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
-	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.5-ALPHA")
+	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.5-ALPHA-2")
 
 	compile(group: 'org.apache.avro', name: 'avro', version: '1.9.2')
 	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')

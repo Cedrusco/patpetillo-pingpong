@@ -51,7 +51,7 @@ public class TopologyProvider {
     final KStream<String, PingPongBallEvent> pingPongStream = branches[0];
 
     final KStream<String, PingPongBallEvent> unmodifiedIncomingStream = pingPongStream
-        .peek((key, value) -> writeEventToDataStore(key, value, Action.RECEIVING_BALL, server));
+        .peek((key, value) -> writeEventToDataStore(key, Action.RECEIVING_BALL, server));
 
     final KStream<String, PingPongBallEvent> loggedAndDelayedStream = unmodifiedIncomingStream
         .transformValues(getLogsAndDelay());
@@ -60,7 +60,7 @@ public class TopologyProvider {
         .selectKey((key, value) -> getRandomUUIDKey());
 
     final KStream<String, PingPongBallEvent> unmodifiedOutGoingStream = randomUUIDStream
-        .peek((key, value) -> writeEventToDataStore(key, value, Action.VOLLEYING_BALL, server));
+        .peek((key, value) -> writeEventToDataStore(key, Action.VOLLEYING_BALL, server));
 
     unmodifiedOutGoingStream
         .to(appConfig.getTopicName(), Produced.with(Serdes.String(), pingPongBallEventSerde));
@@ -68,8 +68,7 @@ public class TopologyProvider {
     return builder.build();
   }
 
-  private void writeEventToDataStore(String key,
-      PingPongBallEvent value, Action action, Server server) {
+  private void writeEventToDataStore(String key, Action action, Server server) {
     final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.systemDefault());
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
     final String timestamp = formatter.format(zonedDateTime);
