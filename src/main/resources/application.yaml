@@ -3,18 +3,19 @@ server:
 app:
   kafkaApplicationIdConfig: pingpongfourplayer-app-id
   kafkaApplicationName: pingpongfourplayer
-  topicName: pingpongfourplayer
+  topicName: pingpong-matt-5
   minDelaySeconds: 3
   maxDelaySeconds: 10
 kafka:
   kafkaAppId: pingPong
-  autoOffsetReset: latest
+  autoOffsetResetConfig: latest
   bootstrapServers: localhost:9092
-  schemaRegistryUrl: http://localhost:10000 #http://registry.amq-streams.apps.openshift.cedruscloud.com
+  schemaRegistryUrl: http://registry.amq-streams.apps.openshift.cedruscloud.com #http://localhost:10000
+  schemaRegistryAutoRegistrationInd: false
+  schemaRegistryTopicKeyValueSeparation: true
   useMockAvroSchemaRegistryClient: false
   stateStoreDirectoryPath:
   useCustomerStateStoreDirectory: false
-  autoOffsetResetConfig: earliest
   securityEnabled: false
   apiKey:
   securityProtocol:

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix= "app.topic")
+@ConfigurationProperties(prefix = "app.topic")
 public class TopicConfig {
 
-    private String topicName;
+  private String topicName;
 }

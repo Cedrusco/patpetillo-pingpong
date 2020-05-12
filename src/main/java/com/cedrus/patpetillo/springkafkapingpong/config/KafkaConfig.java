@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "kafka")
 public class KafkaConfig {
-    private String bootstrapServers;
-    private String kafkaAppId;
-    private String autoOffsetReset;
+  private String bootstrapServers;
+  private String kafkaAppId;
+  private String autoOffsetReset;
 }

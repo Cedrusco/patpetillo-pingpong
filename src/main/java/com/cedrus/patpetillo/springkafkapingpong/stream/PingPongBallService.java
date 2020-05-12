@@ -7,11 +7,10 @@ import com.cedrus.patpetillo.springkafkapingpong.avro.TeamType;
 import com.cedrus.patpetillo.springkafkapingpong.config.AppConfig;
 import com.cedrus.patpetillo.springkafkapingpong.kafka.AvroSender;
 import com.cedrus.patpetillo.springkafkapingpong.model.PingPongBall;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @AllArgsConstructor
 @Slf4j
@@ -26,11 +25,13 @@ public class PingPongBallService {
       final UUID uuid = UUID.randomUUID();
       final String key = uuid.toString();
 
-      final PingPongBallEvent pingPongBallEvent = new PingPongBallEvent(pingPongBall.getId(),
-          TeamType.valueOf(pingPongBall.getCurrentTeamWithBall().name()),
-          TeamType.valueOf(pingPongBall.getReceivingTeamForBall().name()),
-          ServerType.valueOf(pingPongBall.getServer().name()),
-          ColorType.valueOf(pingPongBall.getColor().name()));
+      final PingPongBallEvent pingPongBallEvent =
+          new PingPongBallEvent(
+              pingPongBall.getId(),
+              TeamType.valueOf(pingPongBall.getCurrentTeamWithBall().name()),
+              TeamType.valueOf(pingPongBall.getReceivingTeamForBall().name()),
+              ServerType.valueOf(pingPongBall.getServer().name()),
+              ColorType.valueOf(pingPongBall.getColor().name()));
 
       avroSender.send(appConfig.getTopicName(), key, pingPongBallEvent);
     } catch (Exception e) {

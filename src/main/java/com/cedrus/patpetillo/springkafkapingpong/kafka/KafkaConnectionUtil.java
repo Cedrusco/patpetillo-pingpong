@@ -35,7 +35,8 @@ public class KafkaConnectionUtil {
   public Properties getKafkaProperties(PingPongTeam pingPongTeam) {
     log.info("Get Kafka Properties called with PingPongTeam: {}", pingPongTeam);
     return new KafkaUtils(kafkaConfigProperties, environment, serverConfigProperties.getPort())
-        .buildKafkaProperties(appConfig.getKafkaApplicationName() + pingPongTeam.name(),
+        .buildKafkaProperties(
+            appConfig.getKafkaApplicationName() + pingPongTeam.name(),
             appConfig.getKafkaApplicationName() + pingPongTeam.name());
   }
 }
