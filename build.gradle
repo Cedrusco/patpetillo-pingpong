@@ -1,10 +1,10 @@
-//import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
+import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
 
 plugins {
 	id 'org.springframework.boot' version '2.1.13.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-//	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
+	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
 }
 
 ext {
@@ -69,12 +69,12 @@ dependencies {
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 }
 
-//apply plugin: 'java'
-//apply plugin: 'com.commercehub.gradle.plugin.avro-base'
-//task generateAvro(type: GenerateAvroJavaTask) {
-//	source('src/main/resources/avro')
-//	outputDir = file('src/main/generated')
-//}
+apply plugin: 'java'
+apply plugin: 'com.commercehub.gradle.plugin.avro-base'
+task generateAvro(type: GenerateAvroJavaTask) {
+	source('src/main/resources/avro')
+	outputDir = file('src/main/generated')
+}
 
 // Comment back in to run on build
 //tasks.withType(JavaCompile) {
