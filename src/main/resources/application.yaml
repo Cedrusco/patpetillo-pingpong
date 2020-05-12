@@ -1,15 +1,39 @@
+server:
+  port: 3015
 app:
+  kafkaApplicationIdConfig: pingpongfourplayer-app-id
+  kafkaApplicationName: pingpongfourplayer
+  topicName: pingpong-matt-5
   minDelaySeconds: 3
   maxDelaySeconds: 10
-  topic:
-    topicName: pingpongpatfourplayer
 kafka:
-  bootstrapServers: localhost:9092
   kafkaAppId: pingPong
-  autoOffsetReset: latest
-datasource:
-    driverClassName: org.postgresql.Driver
-    jdbcUrl: jdbc:postgresql://127.0.0.1:5432/postgres
-    username: postgres
-    password: postgres
+  autoOffsetResetConfig: latest
+  bootstrapServers: localhost:9092
+  schemaRegistryUrl: http://registry.amq-streams.apps.openshift.cedruscloud.com #http://localhost:10000
+  schemaRegistryAutoRegistrationInd: false
+  schemaRegistryTopicKeyValueSeparation: true
+  useMockAvroSchemaRegistryClient: false
+  stateStoreDirectoryPath:
+  useCustomerStateStoreDirectory: false
+  securityEnabled: false
+  apiKey:
+  securityProtocol:
+  sslProtocolConfig:
+  psslTruststorePasswordConfig:
+  sslTruststoreLocationConfig:
+  saslMechanism:
+  saslJaasUserName:
+  enableSslEndpointAuthentication:
+spring:
+  datasource:
+      driverClassName: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://127.0.0.1:5432/postgres
+      username: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
 logging.level.com.cedrus: DEBUG

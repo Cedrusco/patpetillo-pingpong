@@ -12,12 +12,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
-    @JsonProperty
-    private boolean successInd;
+  @JsonProperty private boolean successInd;
 
-    @JsonProperty
-    private String message;
+  @JsonProperty private String message;
 
-    @JsonProperty
-    private HttpStatus code;
+  @JsonProperty private HttpStatus code;
 }

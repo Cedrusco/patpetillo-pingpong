@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app")
 public class AppConfig {
 
-    private Integer minDelaySeconds;
-    private Integer maxDelaySeconds;
+  private Integer minDelaySeconds;
+  private Integer maxDelaySeconds;
+  private String topicName;
+  private String kafkaApplicationIdConfig;
+  private String kafkaApplicationName;
 }

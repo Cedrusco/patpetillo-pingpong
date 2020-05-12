@@ -1,0 +1,32 @@
+{
+  "namespace": "com.cedrus.patpetillo.springkafkapingpong.avro",
+  "type": "record",
+  "name": "PingPongBallEvent",
+  "doc": "Represents a Ping Pong Ball Event",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "currentTeamWithBall",
+      "type": "TeamType",
+      "doc": "Represents the team currently with the Ping Pong ball"
+    },
+    {
+      "name": "teamReceivingBall",
+      "type": "TeamType",
+      "doc": "Represents the team receiving the Ping Pong ball"
+    },
+    {
+      "name": "server",
+      "type": "ServerType",
+      "doc": "Represents who is serving the Ping Pong ball"
+    },
+    {
+      "name": "color",
+      "type": "ColorType",
+      "doc": "Represents the possible color of a Ping Pong ball"
+    }
+  ]
+}
