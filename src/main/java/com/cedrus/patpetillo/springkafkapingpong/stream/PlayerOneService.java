@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
 import org.springframework.stereotype.Component;
 
-
 @Slf4j
 @Component
 @AllArgsConstructor
@@ -22,9 +21,10 @@ public class PlayerOneService {
 
     log.info("Player One on team: {}", pingPongTeam);
 
-    final KafkaStreams playerOneStream = new KafkaStreams(
-        topologyProvider.getTopology(pingPongTeam, Server.PLAYER_ONE_SERVICE),
-        kafkaConnectionUtil.getKafkaProperties(pingPongTeam));
+    final KafkaStreams playerOneStream =
+        new KafkaStreams(
+            topologyProvider.getTopology(pingPongTeam, Server.PLAYER_ONE_SERVICE),
+            kafkaConnectionUtil.getKafkaProperties(pingPongTeam));
 
     playerOneStream.start();
 

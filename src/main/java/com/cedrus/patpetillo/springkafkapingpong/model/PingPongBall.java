@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PingPongBall {
-    private Integer id;
-    private PingPongTeam currentTeamWithBall;
-    private PingPongTeam receivingTeamForBall;
-    private Server server;
-    private Color color;
+  private Integer id;
+  private PingPongTeam currentTeamWithBall;
+  private PingPongTeam receivingTeamForBall;
+  private Server server;
+  private Color color;
 }
