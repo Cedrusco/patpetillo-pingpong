@@ -4,6 +4,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.13.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'com.github.sherter.google-java-format' version '0.8'
 //	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
 }
 
@@ -54,7 +55,7 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
 	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
-	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.7-ALPHA")
+	implementation(group: "com.cedrus.streaming.kafka", name: "kafka-common", version: "0.0.7-SNAPSHOT")
 
 	compile(group: 'org.apache.avro', name: 'avro', version: '1.9.2')
 	compile(group: 'org.apache.avro', name: 'avro-compiler', version: '1.9.1')
