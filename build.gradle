@@ -1,4 +1,4 @@
-import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
+//import com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask
 
 plugins {
 	id 'org.springframework.boot' version '2.1.13.RELEASE'
@@ -6,6 +6,15 @@ plugins {
 	id 'java'
 	id "com.commercehub.gradle.plugin.avro" version "0.9.1"
 	id 'com.github.sherter.google-java-format' version '0.8'
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java'
+			srcDir 'build/generated-main-avro-java'
+		}
+	}
 }
 
 ext {
@@ -51,6 +60,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 	'org.apache.kafka:kafka-streams-test-utils:2.5.0'
 
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
@@ -70,12 +80,12 @@ dependencies {
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 }
 
-apply plugin: 'java'
-apply plugin: 'com.commercehub.gradle.plugin.avro-base'
-task generateAvro(type: GenerateAvroJavaTask) {
-	source('src/main/resources/avro')
-	outputDir = file('src/main/generated')
-}
+//apply plugin: 'java'
+//apply plugin: 'com.commercehub.gradle.plugin.avro-base'
+//task generateAvro(type: GenerateAvroJavaTask) {
+//	source('src/main/avro')
+//	outputDir = file('src/main/generated')
+//}
 
 // Comment back in to run on build
 //tasks.withType(JavaCompile) {
